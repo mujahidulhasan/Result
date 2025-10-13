@@ -405,7 +405,7 @@ select {
 .btn.ghost:hover {
     background: rgba(59, 130, 246, 0.1);
 }
-.small{padding:8px 10px;font-size:13px; text-decoration: none;} /* Added text-decoration: none; for link buttons */
+.small{padding:8px 10px;font-size:13px; text-decoration: none;}
 
 
 /* footer */
@@ -446,4 +446,4 @@ code {
   .button-row {
     flex-direction: column;
   }
-                         }
+}
