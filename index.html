@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BTEB Result Checker — Individual Result check</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0a0a0f" />
+</head>
+<body class="neural-theme">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">BTEB</div>
+      <div class="title">Result Checker — Individual Check</div>
+    </div>
+    </header>
+
+  <main class="main">
+    
+    <div class="neural-background">
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+    </div>
+    <div class="ai-glow-page"></div>
+
+    <section class="search-card neural-card">
+      
+      <div class="centered-header">
+        <h1>Individual Result check</h1>
+        <p>Check your Results in One Click!</p>
+      </div>
+
+      <p class="muted" style="text-align:center;">Enter Regulation and Roll number. This is a demo — replace <code>results.json</code> with actual file for real data.</p>
+
+      <div class="row neural-field">
+        <label>Regulation</label>
+        <select id="regulation">
+          <option value="2022">2022 Regulation</option>
+        </select>
+      </div>
+
+      <div class="row neural-field">
+        <label>Roll Number</label>
+        <input id="roll" type="text" placeholder="e.g. 700022" inputmode="numeric" />
+      </div>
+
+      <div class="row button-row">
+        <button id="checkBtn" class="neural-button primary">
+            <div class="button-bg"></div>
+            <span class="button-text">Check Result</span>
+            <div class="button-glow"></div>
+        </button>
+        <button id="clearBtn" class="neural-button ghost">
+            <div class="button-bg-ghost"></div>
+            <span class="button-text">Clear Form</span>
+            <div class="button-glow"></div>
+        </button>
+      </div>
+
+      <div class="hint">Try demo rolls: <code>700001</code>, <code>700002</code>, <code>700010</code></div>
+    </section>
+
+    <section id="resultArea" class="result-area">
+      </section>
+
+    <section class="info neural-card">
+      <h3>Admin Panel</h3>
+      <p class="muted">To update results, put a valid <code>results.json</code> in the project root.</p>
+      <div class="small-row">
+        <a class="btn small" href="tools/extractor.html" target="_blank">Open Extractor Tool</a>
+        <a class="btn small ghost" href="#" id="downloadDemoJSON">Download demo JSON</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Made for demo • Replace results.json with your real data</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
