@@ -32,10 +32,10 @@ function createResultCard(roll, data) {
   const status = document.createElement('div');
   if (data.type === 'passed') {
     status.className = 'status passed';
-    status.textContent = `Passed • GPA ${data.gpa}`;
+    status.textContent = `Passed • GPA ${data.gpa}`; // Passed হলে GPA দেখাচ্ছে
   } else {
     status.className = 'status referred';
-    status.textContent = `Referred`;
+    status.textContent = `Referred`; // Referred দেখাচ্ছে
   }
 
   header.appendChild(title);
@@ -53,9 +53,9 @@ function createResultCard(roll, data) {
   const item2 = document.createElement('div');
   item2.className = 'item';
   if (data.type === 'passed') {
-    item2.innerHTML = `<strong>GPA</strong><div>${data.gpa}</div>`;
+    item2.innerHTML = `<strong>GPA</strong><div>${data.gpa}</div>`; // Passed হলে GPA দেখাচ্ছে
   } else {
-    item2.innerHTML = `<strong>Subjects</strong><div>${data.subjects.join(', ')}</div>`;
+    item2.innerHTML = `<strong>Subjects</strong><div>${data.subjects.join(', ')}</div>`; // Referred হলে Subjects কোড দেখাচ্ছে
   }
   grid.appendChild(item2);
 
