@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BTEB Result Checker — Demo</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b1220" />
+</head>
+<body class="theme-dark">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">BTEB</div>
+      <div class="title">Result Checker — Demo</div>
+    </div>
+    <div class="controls">
+      <label class="switch">
+        <input id="themeToggle" type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="search-card glass">
+      <h1>Check Your Result</h1>
+      <p class="muted">Enter Regulation and Roll number. This is a demo — replace <code>results.json</code> with actual file for real data.</p>
+
+      <div class="row">
+        <label>Regulation</label>
+        <select id="regulation">
+          <option value="2022">2022 Regulation</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>Roll Number</label>
+        <input id="roll" type="text" placeholder="e.g. 700022" inputmode="numeric" />
+      </div>
+
+      <div class="row">
+        <button id="checkBtn" class="btn primary">Check Result</button>
+        <button id="clearBtn" class="btn ghost">Clear</button>
+      </div>
+
+      <div class="hint">Try demo rolls: <code>700001</code>, <code>700002</code>, <code>700010</code></div>
+    </section>
+
+    <section id="resultArea" class="result-area">
+      <!-- JS will inject result card here -->
+    </section>
+
+    <section class="info glass">
+      <h3>Admin</h3>
+      <p class="muted">To update results, put a valid <code>results.json</code> in the project root (or use <code>/tools/extractor.html</code> to generate it from PDF).</p>
+      <div class="small-row">
+        <a class="btn small" href="tools/extractor.html" target="_blank">Open Extractor Tool</a>
+        <a class="btn small ghost" href="#" id="downloadDemoJSON">Download demo JSON</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Made for demo • Replace results.json with your real data</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
