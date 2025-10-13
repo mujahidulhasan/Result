@@ -1,0 +1,449 @@
+/* Custom CSS Variables for BTEB Layout with Neural Theme */
+:root {
+  --bg: #0a0a0f;
+  --card: rgba(15, 15, 20, 0.95);
+  --muted: #94a3b8;
+  --accent: #3b82f6; /* Blue for primary neural effect */
+  --accent-2: #8b5cf6; /* Purple for secondary neural effect */
+  --text: #f8fafc;
+  --radius: 12px;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Global Reset and Body */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden; /* To handle neural background */
+}
+
+/* Neural Background */
+.neural-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.neural-node {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: neuralPulse 4s ease-in-out infinite;
+}
+
+.neural-node:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+.neural-node:nth-child(2) { top: 60%; left: 80%; animation-delay: 1s; }
+.neural-node:nth-child(3) { top: 80%; left: 20%; animation-delay: 2s; }
+.neural-node:nth-child(4) { top: 30%; left: 70%; animation-delay: 3s; }
+.neural-node:nth-child(5) { top: 10%; left: 60%; animation-delay: 4s; }
+
+@keyframes neuralPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.5); }
+}
+
+.ai-glow-page {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    animation: aiGlow 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes aiGlow {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+}
+
+
+/* topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 26px;
+  backdrop-filter: blur(6px);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent);
+  position: relative;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 6px 18px rgba(3, 10, 30, 0.5);
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* main area */
+.main {
+  width: 100%;
+  max-width: 980px;
+  margin: 26px auto;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 22px;
+  align-items: start;
+  position: relative;
+  z-index: 5;
+}
+
+@media (max-width: 920px) {
+  .main {
+    grid-template-columns: 1fr;
+    padding-bottom: 40px;
+  }
+}
+
+/* Neural Card Styling */
+.neural-card {
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 20px;
+  padding: 40px 32px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Centered Header */
+.centered-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.centered-header h1 {
+    color: var(--text);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+}
+.centered-header p {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 6px 0 12px 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px; /* Increased margin for better spacing */
+}
+
+.row label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Neural Input/Select Styling */
+input[type="text"], select {
+  width: 100%;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  color: var(--text);
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, select:focus {
+  border-color: var(--accent);
+  background: rgba(30, 41, 59, 0.8);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+}
+
+select {
+    appearance: none; /* Hide default select arrow */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592c.859 0 1.319 1.013.753 1.658l-4.796 5.482c-.378.43-.984.43-1.362 0z'/%3E%3C/svg%3E") no-repeat right 16px center / 12px 12px, rgba(30, 41, 59, 0.5);
+    padding-right: 40px;
+}
+
+/* Button Row Adjustment for new button style */
+.button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 24px;
+}
+.button-row button {
+    flex: 1;
+    margin: 0;
+}
+
+/* Neural Button Styling (From your provided CSS) */
+.neural-button {
+    width: 100%;
+    background: transparent;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.button-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.neural-button:hover .button-bg {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    transform: scale(1.02);
+}
+
+.neural-button:active .button-bg {
+    transform: scale(0.98);
+}
+
+.button-text {
+    position: relative;
+    z-index: 2;
+    transition: opacity 0.2s ease;
+}
+
+.button-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 14px;
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.neural-button:hover .button-glow {
+    opacity: 0.6;
+}
+
+/* Ghost Button Adjustment */
+.neural-button.ghost .button-bg {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.neural-button.ghost:hover .button-bg {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(59, 130, 246, 0.4);
+    transform: none;
+}
+.neural-button.ghost:hover .button-glow {
+    opacity: 0;
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* result area */
+.result-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-card {
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(15, 15, 20, 0.7); /* Slightly darker for contrast */
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.status {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Updated Status Colors for Neural Theme */
+.status.passed {
+  background: rgba(16, 185, 129, 0.15); /* Greenish-Teal */
+  color: #10b981;
+}
+
+.status.referred {
+  background: rgba(239, 68, 68, 0.15); /* Reddish */
+  color: #ef4444;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.result-grid .item {
+  background: rgba(59, 130, 246, 0.08); /* Light blue background for items */
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+.result-grid .item strong {
+    font-size: 13px;
+    color: #cbd5e1;
+    display: block;
+    margin-bottom: 4px;
+}
+.result-grid .item div {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+
+/* small info column */
+.info {
+  min-height: 120px;
+  padding: 18px; /* Adjusted padding to match neural-card styling for this section */
+  border-radius: 20px;
+}
+.info h3 {
+    margin-top: 0;
+}
+
+.small-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* Existing Button small style adjustment for neural theme */
+.btn {padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;box-shadow: 0 4px 10px rgba(10,30,80,0.25)}
+.btn.ghost{background:transparent;border:1px solid rgba(59, 130, 246, 0.3);color:var(--text); transition: background 0.2s}
+.btn.ghost:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+.small{padding:8px 10px;font-size:13px; text-decoration: none;} /* Added text-decoration: none; for link buttons */
+
+
+/* footer */
+.footer {
+  margin-top: auto;
+  padding: 18px 26px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+/* code and small screens */
+code {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .title {
+    display: none;
+  }
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+  .main {
+    padding: 0 12px;
+  }
+  .neural-card {
+    padding: 32px 24px;
+  }
+  .button-row {
+    flex-direction: column;
+  }
+                         }
