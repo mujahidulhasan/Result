@@ -30,10 +30,10 @@ body {
   flex-direction: column;
   min-height: 100vh;
   position: relative;
-  overflow: hidden; /* To handle neural background */
+  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 
-/* Neural Background */
+/* Neural Background (Unchanged) */
 .neural-background {
     position: fixed;
     top: 0;
@@ -83,7 +83,7 @@ body {
 }
 
 
-/* topbar */
+/* topbar (Unchanged) */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -119,28 +119,24 @@ body {
   font-size: 16px;
 }
 
-/* main area */
+/* --- MAIN LAYOUT OPTIMIZATION --- */
+
+/* Default (PC/Tablet) Layout */
 .main {
   width: 100%;
   max-width: 980px;
   margin: 26px auto;
   padding: 0 18px;
   display: grid;
-  grid-template-columns: 1fr 420px;
+  /* Two columns: 1fr for results, 420px for search/info */
+  grid-template-columns: 1fr 420px; 
   gap: 22px;
   align-items: start;
   position: relative;
   z-index: 5;
 }
 
-@media (max-width: 920px) {
-  .main {
-    grid-template-columns: 1fr;
-    padding-bottom: 40px;
-  }
-}
-
-/* Neural Card Styling */
+/* Neural Card Styling (Unchanged) */
 .neural-card {
   background: var(--card);
   backdrop-filter: blur(20px);
@@ -153,7 +149,7 @@ body {
   overflow: hidden;
 }
 
-/* Centered Header */
+/* Centered Header (Unchanged, but font size scales in media query below) */
 .centered-header {
     text-align: center;
     margin-bottom: 20px;
@@ -182,7 +178,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 18px; /* Increased margin for better spacing */
+  margin-bottom: 18px;
 }
 
 .row label {
@@ -191,7 +187,7 @@ body {
   font-weight: 500;
 }
 
-/* Neural Input/Select Styling */
+/* Neural Input/Select Styling (Unchanged) */
 input[type="text"], select {
   width: 100%;
   background: rgba(30, 41, 59, 0.5);
@@ -212,12 +208,12 @@ input[type="text"]:focus, select:focus {
 }
 
 select {
-    appearance: none; /* Hide default select arrow */
+    appearance: none;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592c.859 0 1.319 1.013.753 1.658l-4.796 5.482c-.378.43-.984.43-1.362 0z'/%3E%3C/svg%3E") no-repeat right 16px center / 12px 12px, rgba(30, 41, 59, 0.5);
     padding-right: 40px;
 }
 
-/* Button Row Adjustment for new button style */
+/* Button Row (PC/Tablet: Side-by-side) */
 .button-row {
     display: flex;
     flex-direction: row;
@@ -229,7 +225,7 @@ select {
     margin: 0;
 }
 
-/* Neural Button Styling (From your provided CSS) */
+/* Neural Button Styling (Unchanged) */
 .neural-button {
     width: 100%;
     background: transparent;
@@ -294,7 +290,7 @@ select {
     opacity: 0.6;
 }
 
-/* Ghost Button Adjustment */
+/* Ghost Button Adjustment (Unchanged) */
 .neural-button.ghost .button-bg {
     background: rgba(30, 41, 59, 0.5);
     border: 1px solid rgba(59, 130, 246, 0.2);
@@ -316,7 +312,7 @@ select {
   text-align: center;
 }
 
-/* result area */
+/* result area (Unchanged) */
 .result-area {
   display: flex;
   flex-direction: column;
@@ -326,34 +322,9 @@ select {
 .result-card {
   padding: 18px;
   border-radius: 12px;
-  background: rgba(15, 15, 20, 0.7); /* Slightly darker for contrast */
+  background: rgba(15, 15, 20, 0.7);
   border: 1px solid rgba(59, 130, 246, 0.2);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.status {
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-/* Updated Status Colors for Neural Theme */
-.status.passed {
-  background: rgba(16, 185, 129, 0.15); /* Greenish-Teal */
-  color: #10b981;
-}
-
-.status.referred {
-  background: rgba(239, 68, 68, 0.15); /* Reddish */
-  color: #ef4444;
 }
 
 .result-grid {
@@ -363,52 +334,14 @@ select {
   margin-top: 16px;
 }
 
-.result-grid .item {
-  background: rgba(59, 130, 246, 0.08); /* Light blue background for items */
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(59, 130, 246, 0.1);
-}
-.result-grid .item strong {
-    font-size: 13px;
-    color: #cbd5e1;
-    display: block;
-    margin-bottom: 4px;
-}
-.result-grid .item div {
-    font-weight: 600;
-    font-size: 16px;
-}
-
-
-/* small info column */
+/* small info column (Unchanged) */
 .info {
   min-height: 120px;
-  padding: 18px; /* Adjusted padding to match neural-card styling for this section */
+  padding: 40px 32px; /* Set same padding as search-card */
   border-radius: 20px;
 }
-.info h3 {
-    margin-top: 0;
-}
 
-.small-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 8px;
-}
-
-/* Existing Button small style adjustment for neural theme */
-.btn {padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600}
-.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;box-shadow: 0 4px 10px rgba(10,30,80,0.25)}
-.btn.ghost{background:transparent;border:1px solid rgba(59, 130, 246, 0.3);color:var(--text); transition: background 0.2s}
-.btn.ghost:hover {
-    background: rgba(59, 130, 246, 0.1);
-}
-.small{padding:8px 10px;font-size:13px; text-decoration: none;}
-
-
-/* footer */
+/* footer (Unchanged) */
 .footer {
   margin-top: auto;
   padding: 18px 26px;
@@ -419,31 +352,56 @@ select {
   z-index: 5;
 }
 
-/* code and small screens */
-code {
-  background: rgba(59, 130, 246, 0.1);
-  color: #60a5fa;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
+/* --- MOBILE OPTIMIZATION --- */
+
+/* Tablet & Mobile Layout (When screen width is 920px or less) */
+@media (max-width: 920px) {
+  /* Main Layout: Switch to single column (Search/Info on top, Results below) */
+  .main {
+    grid-template-columns: 1fr;
+    padding-bottom: 40px;
+  }
 }
 
+/* Small Mobile Screens (When screen width is 480px or less) */
 @media (max-width: 480px) {
+  /* Topbar Adjustments */
   .title {
-    display: none;
+    display: none; /* Hide title to save space */
   }
   .logo {
     width: 40px;
     height: 40px;
   }
+  .topbar {
+    padding: 14px 18px;
+  }
+  
+  /* Main Container Padding */
   .main {
     padding: 0 12px;
+    margin-top: 18px;
   }
+  
+  /* Card Padding */
   .neural-card {
-    padding: 32px 24px;
+    padding: 30px 20px;
+    border-radius: 16px;
   }
+
+  /* Header Scaling */
+  .centered-header h1 {
+      font-size: 1.5rem; /* Smaller main header */
+  }
+
+  /* Button Row: Switch to stack (one button per line) */
   .button-row {
     flex-direction: column;
+  }
+
+  /* Result Grid: Stack two columns into one for very small screens */
+  .result-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
