@@ -1,85 +1,771 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BTEB Result Checker — Individual Result check</title>
-  <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#0a0a0f" />
-</head>
-<body class="neural-theme">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">BTEB</div>
-      <div class="title">Result Checker — Individual Check</div>
-    </div>
-    </header>
-
-  <main class="main">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTEB Result Hub | Glassmorphism Edition</title>
     
-    <div class="neural-background">
-        <div class="neural-node"></div>
-        <div class="neural-node"></div>
-        <div class="neural-node"></div>
-        <div class="neural-node"></div>
-        <div class="neural-node"></div>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.css" rel="stylesheet" type="text/css" />
+    
+    <style>
+        /* Import Fonts */
+        @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Ubuntu:wght@400;500;700&display=swap");
+        .font-ubuntu { font-family: 'Ubuntu', sans-serif; }
+        .font-lato { font-family: 'Lato', sans-serif; }
+        
+        /* Red Asterisk Utility */
+        .required-star {
+            color: #ef4444; /* Tailwind red-500 */
+            font-weight: bold;
+        }
+
+        /* --- CORE GLASSMORHPISM STYLES --- */
+        .glass-card {
+            /* Base Glass Properties */
+            background-color: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); /* Webkit Prefix for better support */
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header/Nav: Sticky and Translucent */
+        header nav {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            border-bottom: 1px solid transparent;
+        }
+
+        /* --- DARK MODE (Apple Dark / Vision Pro Inspired) --- */
+        html[data-theme="dark"] body {
+             background-color: #1e293b; 
+             background-image: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); /* Subtle background gradient */
+        }
+        html[data-theme="dark"] header nav {
+            background-color: rgba(15, 23, 42, 0.8) !important; /* Semi-transparent dark slate */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+        /* Glass Card in Dark Mode: Translucent White */
+        html[data-theme="dark"] .glass-card {
+            background-color: rgba(255, 255, 255, 0.05); /* Very light, subtle translucency */
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- LIGHT MODE (Improved Contrast and Color) --- */
+        html[data-theme="light"] body {
+             background-color: #f8fafc;
+             background-image: linear-gradient(135deg, #e2e8f0 0%, #ffffff 100%); /* Lighter background gradient */
+             color: #1e293b; /* Base text color for light mode */
+        }
+        html[data-theme="light"] header nav {
+            background-color: rgba(255, 255, 255, 0.9) !important; /* Higher transparency white */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+        /* Glass Card in Light Mode: Transparent White/Gray */
+        html[data-theme="light"] .glass-card {
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly more opaque */
+            border-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Text Color Adjustments for Light Mode */
+        html[data-theme="light"] .dark\:text-gray-900,
+        html[data-theme="light"] .dark\:text-white {
+            color: #1e293b !important; /* Slate-800 for better contrast */
+        }
+        html[data-theme="light"] .dark\:text-gray-200,
+        html[data-theme="light"] .dark\:text-gray-400 {
+             color: #475569 !important; /* Slate-600 */
+        }
+        html[data-theme="light"] .dark\:hover\:text-blue-400:hover {
+             color: #2563eb !important; /* Blue-600 hover */
+        }
+
+
+        /* Main container must be transparent to see the body background and the blur effect */
+        .main-container {
+             background-color: transparent !important;
+             box-shadow: none !important;
+        }
+
+        /* --- FORM ELEMENT SPECIFIC STYLES --- */
+        /* FIX: Roll Number Input Focus Style (Updated for new aesthetic) */
+        #roll-number:focus,
+        select.select:focus,
+        .custom-dropdown-header:focus {
+            outline: 2px solid #5d93ff; 
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px #5d93ff;
+        }
+
+        /* Base input styling for better glass integration in dark mode */
+        html[data-theme="dark"] .input, 
+        html[data-theme="dark"] .select, 
+        html[data-theme="dark"] .custom-dropdown-header {
+             background-color: rgba(255, 255, 255, 0.1) !important;
+             border-color: rgba(255, 255, 255, 0.2) !important;
+             color: white !important;
+        }
+        /* Base input styling for better glass integration in light mode */
+        html[data-theme="light"] .input,
+        html[data-theme="light"] .select, 
+        html[data-theme="light"] .custom-dropdown-header {
+             background-color: rgba(0, 0, 0, 0.05) !important;
+             border-color: rgba(0, 0, 0, 0.1) !important;
+             color: black !important;
+        }
+
+        /* --- LAYOUT / TEXT FLOW FIX --- */
+        .max-w-3xl.mx-auto.space-y-8 {
+            max-width: 100%; 
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        @media (min-width: 1024px) {
+            .max-w-3xl.mx-auto.space-y-8 {
+                max-width: 48rem;
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+        /* Simulating the active link style */
+        .main-nav-links .active {
+            color: #1d4ed8; 
+            text-decoration: underline;
+            text-underline-offset: 8px;
+        }
+        .main-nav-links .active.dark\:text-blue-400 {
+             color: #60a5fa;
+        }
+        html[data-theme="light"] .main-nav-links .active {
+             color: #1d4ed8 !important; /* Retain strong color in light mode */
+        }
+
+
+        /* --- Custom Dropdown Styles (Integrated) --- */
+        .custom-dropdown-container {
+            position: relative;
+            width: 100%;
+        }
+        .custom-dropdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 3rem;
+            min-height: 3rem;
+            padding-inline-start: 1rem;
+            padding-inline-end: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        .card {
+            position: absolute;
+            z-index: 10;
+            top: 100%;
+            margin-top: 8px;
+            width: 100%;
+            user-select: none;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            display: none;
+        }
+        /* Dark Mode Dropdown Card */
+        html[data-theme="dark"] .card {
+            background-color: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Light Mode Dropdown Card */
+        html[data-theme="light"] .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .card.open {
+            display: flex;
+        }
+        .card .list .element label input[type="radio"] {
+            display: none;
+        }
+        .card .list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0px;
+        }
+        .card .list .element > label {
+            display: flex;
+            align-items: center;
+            color: #a6adbb;
+            gap: 10px;
+            transition: all 0.3s ease-out;
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        html[data-theme="light"] .card .list .element > label {
+            color: #4b5563;
+        }
+        .card .list .element label svg {
+            width: 19px;
+            height: 19px;
+            transition: all 0.3s ease-out;
+            stroke: currentColor;
+        }
+        .card .list .element label:has(input[type="radio"]:checked),
+        .card .list .element label:hover {
+            background-color: #5d93ff; 
+            color: white;
+        }
+        .card .list .element label:has(input[type="radio"]:checked) svg,
+        .card .list .element label:hover svg {
+            stroke: white;
+        }
+        .card .separator {
+            border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+        }
+        html[data-theme="light"] .card .separator {
+            border-top: 1.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Result Item GPA Styling */
+        .gpa-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        html[data-theme="light"] .gpa-item {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .gpa-value {
+            font-weight: 700;
+            color: #60a5fa; /* Blue-400 */
+        }
+        /* Reflected subjects warning color */
+        .ref-status {
+             color: #ef4444; /* Red-500 */
+             font-weight: 700;
+             font-style: italic;
+        }
+    </style>
+
+    <meta name="author" content="Modasser Hasan">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BTEB Result Hub">
+    <meta property="og:locale" content="en_US">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body class="min-h-screen">
+    
+    <div class="Toastify"></div>
+    
+    <div class="max-w-[1050px] mx-auto font-ubuntu main-container" data-theme="dark" id="main-content-wrapper">
+        
+        <div class="drawer">
+            <input id="my-drawer" type="checkbox" class="drawer-toggle">
+            
+            <div class="drawer-content">
+                
+                <header>
+                    <nav class="border-gray-200 dark:border-gray-700">
+                        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                            <div>
+                                <a title="Home Page" class="flex items-center space-x-3 self-center text-xl sm:text-2xl font-semibold whitespace-nowrap dark:text-white hover:underline underline-offset-8" href="/">
+                                    BTEB Result Hub
+                                </a>
+                            </div>
+                            
+                            <div class="items-center justify-between flex w-auto">
+                                <ul class="main-nav-links font-medium rounded-lg space-x-8 mt-0 border-0 hidden lg:flex">
+                                    <li><a class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:text-blue-700 dark:hover:text-blue-400 dark:text-white active:scale-[.95] transition-[transform] duration-200 active" href="/results">Individual Results</a></li>
+                                    <li><a class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:text-blue-700 dark:hover:text-blue-400 dark:text-white active:scale-[.95] transition-[transform] duration-200" href="/institute-results">Institute Results</a></li>
+                                    <li><a class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:text-blue-700 dark:hover:text-blue-400 dark:text-white active:scale-[.95] transition-[transform] duration-200" href="/group-results">Group Results</a></li>
+                                    <li><a class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:text-blue-700 dark:hover:text-blue-400 dark:text-white active:scale-[.95] transition-[transform] duration-200" href="/cgpa-calculator">CGPA Calculator</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="flex gap-5 items-center">
+                                <button onclick="toggleTheme()" title="Toggle Theme" id="theme-toggle" class="text-white">
+                                    <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" style="cursor:pointer;transform:rotate(40deg);color:white">
+                                        <mask id="circle-mask-0"><rect x="0" y="0" width="100%" height="100%" fill="white"></rect><circle cx="50%" cy="23%" r="9" fill="black"></circle></mask>
+                                        <circle cx="12" cy="12" fill="white" style="r:9px" mask="url(#circle-mask-0)"></circle>
+                                    </svg>
+                                    <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;display:none;">
+                                        <circle cx="12" cy="12" r="5" stroke="#000"></circle>
+                                        <g stroke="#000">
+                                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                        </g>
+                                    </svg>
+                                </button>
+                                
+                                <label for="my-drawer" class="btn text-2xl py-3 lg:hidden" title="More Menu">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z"></path></svg>
+                                </label>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+                <main class="my-4">
+                    <div class="p-4 sm:p-6 lg:p-8">
+                        <div class="max-w-xl sm:max-w-lg mx-auto p-5 sm:p-8 rounded-2xl glass-card form-card shadow-lg">
+                            <h1 class="text-2xl font-bold dark:text-white text-gray-900 mb-1">Individual Result Check</h1>
+                            <p class="dark:text-gray-200 text-gray-700 mb-6">Check your Results in One Click!</p>
+                            
+                            <div class="space-y-4">
+                                <div class="custom-dropdown-container">
+                                    <label class="block mb-1 text-sm font-medium dark:text-gray-400 text-gray-700">
+                                        Exam <span class="required-star">*</span>
+                                    </label>
+                                    
+                                    <div class="custom-dropdown-header" onclick="toggleDropdown(this)">
+                                        <span id="selected-exam">Diploma in Engineering</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-gray-400">
+                                            <path d="m6 9 6 6 6-6"/>
+                                        </svg>
+                                    </div>
+                                    
+                                    <div class="card" id="exam-dropdown-menu">
+                                        <ul class="list">
+                                            <li class="element">
+                                                <label for="exam-eng" onclick="selectOption('exam-eng', 'Diploma in Engineering', 'selected-exam')">
+                                                    <input type="radio" id="exam-eng" name="exam-filed" value="DIPLOMA IN ENGINEERING" checked />
+                                                    <svg class="lucide lucide-book-open" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg" stroke="#7e8590"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                                                    Diploma in Engineering
+                                                </label>
+                                            </li>
+                                            <div class="separator"></div>
+                                            <li class="element">
+                                                <label for="exam-textile" onclick="selectOption('exam-textile', 'Diploma in Textile', 'selected-exam')">
+                                                    <input type="radio" id="exam-textile" name="exam-filed" value="DIPLOMA IN TEXTILE" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7e8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-factory">
+                                                         <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-6 4-6-4-6 4V4a2 2 0 0 1 2-2h4"/>
+                                                         <path d="M12 2v6"/>
+                                                         <path d="M12 10v6"/>
+                                                         <path d="M16 8v6"/>
+                                                         <path d="M16 12v6"/>
+                                                     </svg>
+                                                    Diploma in Textile
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="custom-dropdown-container">
+                                    <label class="block mb-1 text-sm font-medium dark:text-gray-400 text-gray-700">
+                                        Regulation <span class="required-star">*</span>
+                                    </label>
+                                    
+                                    <div class="custom-dropdown-header" onclick="toggleDropdown(this)">
+                                        <span id="selected-regulation">2022</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-gray-400">
+                                            <path d="m6 9 6 6 6-6"/>
+                                        </svg>
+                                    </div>
+                                    
+                                    <div class="card" id="regulation-dropdown-menu">
+                                        <ul class="list">
+                                            <li class="element">
+                                                <label for="reg-2022" onclick="selectOption('reg-2022', '2022', 'selected-regulation')">
+                                                    <input type="radio" id="reg-2022" name="regulation-field" value="2022" checked />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7e8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-clock"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h8"/><circle cx="17" cy="17" r="5"/><path d="M17 14v3h3"/></svg>
+                                                    2022
+                                                </label>
+                                            </li>
+                                            <div class="separator"></div>
+                                            <li class="element">
+                                                <label for="reg-2016" onclick="selectOption('reg-2016', '2016', 'selected-regulation')">
+                                                    <input type="radio" id="reg-2016" name="regulation-field" value="2016" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7e8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-off"><path d="M4.2 4.2A2 2 0 0 0 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 1.8-1.2"/><path d="M8 2v4"/><path d="M16 2v2"/><path d="M3 10h11"/><path d="m2 2 20 20"/></svg>
+                                                    2016
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="roll-number" class="block mb-1 text-sm font-medium dark:text-gray-400 text-gray-700">
+                                        Roll Number <span class="required-star">*</span>
+                                    </label>
+                                    <input type="text" id="roll-number" value="" class="input input-bordered w-full" placeholder="Enter your 6 digit roll number">
+                                </div>
+                                
+                                <button onclick="getResults()" class="btn btn-info w-full text-white bg-blue-600 hover:bg-blue-700 border-none">Get Result</button>
+                            </div>
+                        </div>
+
+                        <div class="max-w-xl sm:max-w-lg mx-auto p-5 sm:p-8 rounded-2xl glass-card form-card shadow-lg mt-8 hidden" id="result-display-section">
+                            <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-4" id="result-title"></h2>
+                            <p class="mb-4 text-sm dark:text-gray-400 text-gray-600" id="published-date-info"></p>
+                            <div id="result-content" class="space-y-3 dark:text-gray-200 text-gray-700">
+                                </div>
+                        </div>
+                        
+                        <div class="max-w-xl sm:max-w-lg mx-auto my-8">
+                             <img 
+                                src="active-student-engagement-in-a-digital-classroom-art-illustration-creative-learning-environment-dynamic-perspective-educational-concept-free-png.png" 
+                                alt="Active Student Engagement Illustration" 
+                                class="block w-full h-auto rounded-lg"
+                            >
+                        </div>
+
+                        <div class="max-w-3xl mx-auto space-y-8">
+                            
+                            <div class="p-6 rounded-2xl shadow-md bg-transparent">
+                                <h2 class="text-xl font-semibold dark:text-white text-gray-900 mb-3">Individual Result (Explained)</h2>
+                                <p class="dark:text-gray-200 text-gray-700">
+                                    Elevate the experience of result viewing for diploma students with your Individual Result link. No more navigating through complex official websites or long wait times! Enter your roll number, and our website will swiftly fetch the official PDF document to instantly present your result. Seamlessly check your grades and performance across different semesters, allowing you to track your progress with ease. With the option to copy the result link, sharing your achievements has never been simpler.
+                                </p>
+                            </div>
+
+                            <div class="p-6 rounded-2xl shadow-md bg-transparent">
+                                <h2 class="text-xl font-semibold dark:text-white text-gray-900 mb-3">How to Check Your Result</h2>
+                                <p class="mb-4 dark:text-gray-200 text-gray-700">
+                                    Enter your Roll number in the form, Select your Exam and Regulation, and click on "Get Result" to see your individual results.
+                                </p>
+
+                                <h3 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Supported Exam Results</h3>
+                                <ul class="list-disc list-inside space-y-1 dark:text-gray-200 text-gray-700">
+                                    <li>Diploma in Engineering</li>
+                                    <li>Diploma in Textile</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="p-6 rounded-2xl shadow-md bg-transparent">
+                                <h2 class="text-xl font-semibold dark:text-white text-gray-900 mb-3">Multiple Semester Results (Explained)</h2>
+                                <p class="dark:text-gray-200 text-gray-700">
+                                    A single semester might have several results, each with a publication date listed at the top. However, only the most recent result is considered final for that semester. Previous results are simply historical records. Therefore, don't be confused if past results mislead you; look for the final result with the latest publication date.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+                <footer class="p-10 pb-3 glass-card">
+                    <div class="flex flex-col items-center md:flex-row justify-between gap-5 dark:text-white text-gray-900">
+                        <div class="text-center md:text-left">
+                            <h1 class="text-2xl font-lato font-semibold">BTEB Result Hub</h1>
+                            <p class="dark:text-gray-400 text-gray-700">Solution of your BTEB Results!</p>
+                        </div>
+                        
+                        <ul class="flex flex-wrap justify-center items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                            <li><a class="hover:underline underline-offset-2 me-4 md:me-6" href="/results">Individual Result</a></li>
+                            <li><a class="hover:underline underline-offset-2 me-4 md:me-6" href="/institute-results">Institute Result</a></li>
+                            <li><a class="hover:underline underline-offset-2 me-4 md:me-6" href="/booklists">Booklists</a></li>
+                            <li><a class="hover:underline underline-offset-2 me-4 md:me-6" href="/about">About</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex justify-center gap-5 text-xl border-y dark:border-gray-700 border-gray-400 my-5 py-5 dark:text-white text-gray-900">
+                        <a href="https://www.facebook.com/mujahidulhasan2" target="_blank" title="Facebook">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path></svg>
+                        </a>
+                        <a href="mailto:mujahidulhasan2@gmail.com" title="Email">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M928 160H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-80.8 108.9L531.7 514.4c-7.8 6.1-18.7 6.1-26.5 0L189.6 268.9A7.2 7.2 0 0 1 194 256h648.8a7.2 7.2 0 0 1 4.4 12.9z"></path></svg>
+                        </a>
+                        <a href="https://github.com/mujahidulhasan" target="_blank" title="GitHub">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
+                        </a>
+                    </div>
+                    
+                    <div>
+                           <p class="block text-xs sm:text-sm text-gray-500 text-center dark:text-gray-400">© 2024 <a href="/" class="hover:underline underline-offset-2">BTEBResultHub</a>. All Rights Reserved.</p>
+                    </div>
+                </footer>
+                </div>
+            
+            <div class="drawer-side z-50">
+                <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+                <div class="w-72 sm:w-80 min-h-full max-h-full bg-base-200 text-base-content overflow-y-auto dark:bg-slate-900/90" style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+                    
+                    <div class="mb-2 px-6 py-10 bg-slate-200 dark:bg-slate-900">
+                        <h1 class="text-2xl font-lato font-bold">BTEB Result Hub</h1>
+                        <p class="italic text-sm sm:text-base">Where BTEB Results come to Life!</p>
+                    </div>
+                    
+                    <ul class="menu [&_a]:btn [&_a]:gap-3 [&_a]:justify-start [&_a]:py-2 [&_a]:text-base sm:[&_a]:text-lg">
+                        <li><a href="/"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12.97 2.59a1.5 1.5 0 0 0-1.94 0l-7.5 6.363A1.5 1.5 0 0 0 3 10.097V19.5A1.5 1.5 0 0 0 4.5 21h4.75a.75.75 0 0 0 .75-.75V14h4v6.25c0 .414.336.75.75.75h4.75a1.5 1.5 0 0 0 1.5-1.5v-9.403a1.5 1.5 0 0 0-.53-1.144l-7.5-6.363Z"></path></svg> Home</a></li>
+                        <li><a href="/results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>Individual Result</a></li>
+                        <li><a href="/institute-results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21 10h-2V4h1V2H4v2h1v6H3a1 1 0 0 0-1 1v9h20v-9a1 1 0 0 0-1-1zm-7 8v-4h-4v4H7V4h10v14h-3z"></path><path d="M9 6h2v2H9zm4 0h2v2h-2zm-4 4h2v2H9zm4 0h2v2h-2z"></path></svg>Institute Result</a></li>
+                        <li><a href="/group-results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.2" baseProfile="tiny" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.381 0 2.631-.56 3.536-1.465.904-.904 1.464-2.154 1.464-3.535s-.56-2.631-1.464-3.535c-.905-.905-2.155-1.465-3.536-1.465s-2.631.56-3.536 1.465c-.904.904-1.464 2.154-1.464 3.535s.56 2.631 1.464 3.535c.905.905 2.155 1.465 3.536 1.465zM20 15c.69 0 1.315-.279 1.768-.731.453-.452.732-1.077.732-1.769 0-.69-.279-1.315-.732-1.768-.453-.453-1.078-.732-1.768-.732-.691 0-1.316.279-1.769.732-.452.453-.731 1.078-.731 1.768 0 .691.279 1.316.731 1.769s1.078.731 1.769.731zM20 15.59c-1.331 0-2.332.406-2.917.968-1.115-.917-2.878-1.558-5.083-1.558-2.266 0-3.995.648-5.092 1.564-.596-.565-1.608-.974-2.908-.974-2.188 0-3.5 1.09-3.5 2.182 0 .545 1.312 1.092 3.5 1.092.604 0 1.146-.051 1.623-.133l-.04.27c0 1 2.406 2 6.417 2 3.762 0 6.417-1 6.417-2l-.02-.255c.463.073.995.118 1.603.118 2.051 0 3.5-.547 3.5-1.092 0-1.092-1.373-2.182-3.5-2.182zM4 15c.69 0 1.315-.279 1.768-.732.453-.453.732-1.078.732-1.768 0-.689-.279-1.314-.732-1.768-.453-.452-1.078-.732-1.768-.732-.691 0-1.316.28-1.769.732-.452.454-.731 1.079-.731 1.768 0 .69.279 1.315.731 1.768.453.453 1.078.732 1.769.732z"></path></svg>Group Result</a></li>
+                        <li><a href="/cgpa-calculator"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM440.2 765h-50.8c-2.2 0-4.5-1.1-5.9-2.9L348 718.6l-35.5 43.5a7.38 7.38 0 0 1-5.9 2.9h-50.8c-6.6 0-10.2-7.9-5.8-13.1l62.7-76.8-61.2-74.9c-4.3-5.2-.7-13.1 5.9-13.1h50.9c2.2 0 4.5 1.1 5.9 2.9l34 41.6 34-41.6c1.5-1.9 3.6-2.9 5.9-2.9h50.8c6.6 0 10.2 7.9 5.9 13.1L383.5 675l62.7 76.8c4.2 5.3.6 13.2-6 13.2zm7.8-382c0 2.2-1.4 4-3.2 4H376v68.7c0 1.9-1.8 3.3-4 3.3h-48c-2.2 0-4-1.4-4-3.2V387h-68.8c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4H320v-68.8c0-1.8 1.8-3.2 4-3.2h48c2.2 0 4 1.4 4 3.2V331h68.7c1.9 0 3.3 1.8 3.3 4v48zm328 369c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48zm0-104c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48zm0-265c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48z"></path></svg>CGPA Calculator</a></li>
+                        <li><a href="/booklists"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"></path></svg>Booklists</a></li>
+                        <li><a href="/about"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"></path></svg>About</a></li>
+                        <li><a href="mailto:mujahidulhasan2@gmail.com"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56zm-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26z"></path></svg>Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+             </div>
     </div>
-    <div class="ai-glow-page"></div>
+    
+    <script>
+        // --- HELPER FUNCTION TO GET SELECTED VALUE ---
+        function getSelectedOptionValue(elementId) {
+             const selectedElement = document.getElementById(elementId);
+             // For the custom dropdown, the value is stored as text in the span.
+             if (selectedElement) {
+                return selectedElement.textContent.trim().toUpperCase();
+             }
+             return null;
+        }
 
-    <section class="search-card neural-card">
-      
-      <div class="centered-header">
-        <h1>Individual Result check</h1>
-        <p>Check your Results in One Click!</p>
-      </div>
+        // --- ASYNCHRONOUS RESULT LOOKUP LOGIC ---
+        async function getResults() {
+            const rollNumber = document.getElementById('roll-number').value.trim();
+            const exam = getSelectedOptionValue('selected-exam');
+            const regulation = getSelectedOptionValue('selected-regulation');
+            const resultDisplay = document.getElementById('result-display-section');
+            const resultTitle = document.getElementById('result-title');
+            const resultContent = document.getElementById('result-content');
+            const publishedDateInfo = document.getElementById('published-date-info');
 
-      <p class="muted" style="text-align:center;">Enter Regulation and Roll number. This is a demo — replace <code>results.json</code> with actual file for real data.</p>
+            // 1. Clear previous results and hide section
+            resultDisplay.classList.add('hidden');
+            resultContent.innerHTML = '';
+            publishedDateInfo.textContent = '';
+            
+            // 2. Basic Input Validation
+            if (!rollNumber || rollNumber.length !== 6 || isNaN(rollNumber)) {
+                resultTitle.textContent = "Validation Error";
+                resultContent.innerHTML = '<p class="text-red-500">Please enter a valid 6-digit Roll Number.</p>';
+                resultDisplay.classList.remove('hidden');
+                return;
+            }
 
-      <div class="row neural-field">
-        <label>Regulation</label>
-        <select id="regulation">
-          <option value="2022">2022 Regulation</option>
-        </select>
-      </div>
+            // 3. Data Fetching (Assuming results.json is accessible via HTTP)
+            let ALL_RESULTS;
+            try {
+                // Fetch the JSON file from the project root
+                const response = await fetch('results.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Error! Status: ${response.status}. Check if 'results.json' file exists.`);
+                }
+                ALL_RESULTS = await response.json();
+            } catch (error) {
+                resultTitle.textContent = "Data Load Error";
+                resultContent.innerHTML = `<p class="text-red-500">
+                    Failed to load results data (results.json). 
+                    Please ensure the file is in the same folder as this HTML and your server is running.
+                    </p>`;
+                resultDisplay.classList.remove('hidden');
+                console.error('Error fetching results.json:', error);
+                return;
+            }
 
-      <div class="row neural-field">
-        <label>Roll Number</label>
-        <input id="roll" type="text" placeholder="e.g. 700022" inputmode="numeric" />
-      </div>
+            // 4. Data Lookup & Filtering
+            // The structure is { "data": { "rollNumber": { ... } } }
+            const studentData = ALL_RESULTS.data[rollNumber];
 
-      <div class="row button-row">
-        <button id="checkBtn" class="neural-button primary">
-            <div class="button-bg"></div>
-            <span class="button-text">Check Result</span>
-            <div class="button-glow"></div>
-        </button>
-        <button id="clearBtn" class="neural-button ghost">
-            <div class="button-bg-ghost"></div>
-            <span class="button-text">Clear Form</span>
-            <div class="button-glow"></div>
-        </button>
-      </div>
+            if (!studentData) {
+                resultTitle.textContent = "Result Not Found";
+                resultContent.innerHTML = '<p class="text-red-500">No result found for Roll Number ' + rollNumber + '.</p>';
+                resultDisplay.classList.remove('hidden');
+                return;
+            }
 
-      <div class="hint">Try demo rolls: <code>700001</code>, <code>700002</code>, <code>700010</code></div>
-    </section>
+            // 5. Final Criteria Check
+            const dataExam = studentData.exam.trim().toUpperCase();
+            const dataRegulation = studentData.regulation.trim().toUpperCase();
 
-    <section id="resultArea" class="result-area">
-      </section>
+            if (dataExam !== exam || dataRegulation !== regulation) {
+                 resultTitle.textContent = "Criteria Mismatch";
+                 resultContent.innerHTML = `<p class="text-red-500">Result found but criteria mismatched:</p>
+                                            <p class="mt-2"><strong>Found:</strong> ${dataExam} (${dataRegulation})</p>
+                                            <p><strong>Selected:</strong> ${exam} (${regulation})</p>`;
+                 resultDisplay.classList.remove('hidden');
+                 return;
+            }
 
-    <section class="info neural-card">
-      <h3>Admin Panel</h3>
-      <p class="muted">To update results, put a valid <code>results.json</code> in the project root.</p>
-      <div class="small-row">
-        <a class="btn small" href="tools/extractor.html" target="_blank">Open Extractor Tool</a>
-        <a class="btn small ghost" href="#" id="downloadDemoJSON">Download demo JSON</a>
-      </div>
-    </section>
-  </main>
+            // 6. Display Result
+            resultTitle.textContent = "Result for Roll: " + rollNumber;
+            publishedDateInfo.textContent = "Published Date: " + (studentData.published_date || 'N/A');
+            let resultHTML = '';
 
-  <footer class="footer">
-    <div>Made for demo • Replace results.json with your real data</div>
-  </footer>
+            // --- Display GPA ---
+            if (studentData.results) {
+                resultHTML += '<h3 class="text-lg font-bold dark:text-white text-gray-900 mt-4">Semester GPA</h3>';
+                const gpas = studentData.results;
+                
+                // Map gpa keys to user-friendly names
+                const gpaMap = { 
+                    'gpa1': '1st Semester', 
+                    'gpa2': '2nd Semester', 
+                    'gpa3': '3rd Semester', 
+                    'gpa4': '4th Semester',
+                    'gpa5': '5th Semester',
+                    'gpa6': '6th Semester',
+                    'gpa7': '7th Semester',
+                    'gpa8': '8th Semester'
+                };
+                
+                Object.keys(gpaMap).forEach(key => {
+                    const semesterName = gpaMap[key];
+                    let gpaValue = gpas[key];
+                    
+                    if (gpaValue !== undefined) {
+                        let displayValue = '';
+                        let valueClass = 'gpa-value';
 
-  <script src="script.js"></script>
+                        if (typeof gpaValue === 'string' && gpaValue.toLowerCase() === 'ref') {
+                            displayValue = 'Referred (Ref)';
+                            valueClass = 'ref-status';
+                        } else {
+                            // Ensure it's treated as a number for formatting
+                            const gpaNumber = parseFloat(gpaValue);
+                            displayValue = gpaNumber.toFixed(2);
+                            if (gpaNumber < 2.00) valueClass = 'ref-status';
+                        }
+
+                         resultHTML += `
+                            <div class="gpa-item">
+                                <span>${semesterName}:</span>
+                                <span class="${valueClass}">${displayValue}</span>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+
+            // --- Display Referred Subjects ---
+            const referred = studentData.referred_subjects || [];
+
+            if (referred.length > 0) {
+                 const subjects = referred.filter(s => s && s.length > 2);
+                 if (subjects.length > 0) {
+                     resultHTML += `
+                         <h3 class="text-lg font-bold text-red-500 dark:text-red-400 mt-6">
+                             Referred Subjects (${subjects.length})
+                         </h3>
+                         <ul class="list-disc list-inside space-y-1 ml-4 text-red-500 dark:text-red-400">
+                             ${subjects.map(s => `<li>${s}</li>`).join('')}
+                         </ul>
+                     `;
+                 }
+            } else if (studentData.results && Object.values(studentData.results).every(gpa => gpa !== 'ref' && parseFloat(gpa) >= 2.00)) {
+                 // Check if the student passed all subjects and has GPA for all semesters present
+                 resultHTML += '<p class="text-green-500 font-bold mt-6">Congratulations! No referral found.</p>';
+            }
+
+
+            resultContent.innerHTML = resultHTML;
+            resultDisplay.classList.remove('hidden');
+        }
+
+        // --- THEME TOGGLE JS (EXISTING CODE) ---
+        const storedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', storedTheme);
+        document.documentElement.className = storedTheme;
+        document.getElementById('main-content-wrapper').setAttribute('data-theme', storedTheme);
+
+        function updateIcons(theme) {
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            const themeToggle = document.getElementById('theme-toggle');
+
+            if (theme === 'dark') {
+                moonIcon.style.display = 'block';
+                sunIcon.style.display = 'none';
+                themeToggle.classList.add('text-white');
+                themeToggle.classList.remove('text-gray-900');
+            } else {
+                moonIcon.style.display = 'none';
+                sunIcon.style.display = 'block';
+                themeToggle.classList.add('text-gray-900');
+                themeToggle.classList.remove('text-white');
+            }
+        }
+        
+        updateIcons(storedTheme);
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.documentElement.className = newTheme;
+            document.getElementById('main-content-wrapper').setAttribute('data-theme', newTheme);
+            
+            localStorage.setItem('theme', newTheme);
+            
+            updateIcons(newTheme);
+        }
+        
+        // --- CUSTOM DROPDOWN JS (EXISTING CODE) ---
+        function toggleDropdown(header) {
+            // Closes all other open dropdowns before opening the new one
+            document.querySelectorAll('.card.open').forEach(menu => {
+                 if (menu !== header.nextElementSibling) {
+                    menu.classList.remove('open');
+                 }
+            });
+            const menu = header.nextElementSibling;
+            menu.classList.toggle('open');
+            // Give header a focus style when open (optional, but good for accessibility/UX)
+            header.classList.toggle('ring-2', menu.classList.contains('open'));
+            header.classList.toggle('ring-offset-2', menu.classList.contains('open'));
+            header.classList.toggle('ring-blue-500', menu.classList.contains('open'));
+        }
+
+        // Updates selected text and closes the dropdown
+        function selectOption(radioId, value, selectedElementId) {
+            const radio = document.getElementById(radioId);
+            const menu = radio.closest('.card');
+            const selectedText = document.getElementById(selectedElementId);
+            const header = radio.closest('.custom-dropdown-container').querySelector('.custom-dropdown-header');
+
+
+            selectedText.textContent = value;
+            radio.checked = true;
+            
+            // Close menu and remove focus styling
+            menu.classList.remove('open');
+            header.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
+
+            event.stopPropagation();
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdownContainers = document.querySelectorAll('.custom-dropdown-container');
+            dropdownContainers.forEach(container => {
+                const menu = container.querySelector('.card');
+                const header = container.querySelector('.custom-dropdown-header');
+                
+                // If a dropdown is open AND the click target is outside the dropdown container, close it.
+                if (menu && menu.classList.contains('open') && !container.contains(event.target)) {
+                    menu.classList.remove('open');
+                    header.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
