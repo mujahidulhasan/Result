@@ -20,11 +20,21 @@
             font-weight: bold;
         }
 
-        /* --- CORE GLASSMORHPISM STYLES --- */
+        /* --- CORE GLASSMORHPISM STYLES & VARIABLES --- */
+        /* Define CSS variables for clean theme switching */
+        html[data-theme="dark"] {
+            --glass-card-bg-color: rgba(255, 255, 255, 0.05);
+            --glass-card-border-color: rgba(255, 255, 255, 0.1);
+        }
+        html[data-theme="light"] {
+            --glass-card-bg-color: rgba(255, 255, 240, 0.7); /* Slightly warmer off-white in light mode */
+            --glass-card-border-color: rgba(0, 0, 0, 0.15);
+        }
+
         .glass-card {
             /* Base Glass Properties */
-            background-color: rgba(255, 255, 255, 0.1); 
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background-color: var(--glass-card-bg-color); 
+            border: 1px solid var(--glass-card-border-color);
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px); /* Webkit Prefix for better support */
             transition: all 0.3s ease-in-out;
@@ -39,55 +49,40 @@
             border-bottom: 1px solid transparent;
         }
 
-        /* --- DARK MODE (Apple Dark / Vision Pro Inspired) --- */
+        /* --- DARK MODE --- */
         html[data-theme="dark"] body {
              background-color: #1e293b; 
-             background-image: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); /* Subtle background gradient */
+             background-image: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
         }
         html[data-theme="dark"] header nav {
-            background-color: rgba(15, 23, 42, 0.8) !important; /* Semi-transparent dark slate */
+            background-color: rgba(15, 23, 42, 0.8) !important; 
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-bottom-color: rgba(255, 255, 255, 0.1);
         }
-        /* Glass Card in Dark Mode: Translucent White */
-        html[data-theme="dark"] .glass-card {
-            background-color: rgba(255, 255, 255, 0.05); /* Very light, subtle translucency */
-            border-color: rgba(255, 255, 255, 0.1);
-        }
 
-        /* --- LIGHT MODE (Improved Contrast and Color) --- */
+        /* --- LIGHT MODE --- */
         html[data-theme="light"] body {
              background-color: #f8fafc;
-             background-image: linear-gradient(135deg, #e2e8f0 0%, #ffffff 100%); /* Lighter background gradient */
-             color: #1e293b; /* Base text color for light mode */
+             background-image: linear-gradient(135deg, #e2e8f0 0%, #ffffff 100%);
+             color: #1e293b;
         }
         html[data-theme="light"] header nav {
-            background-color: rgba(255, 255, 255, 0.9) !important; /* Higher transparency white */
+            background-color: rgba(255, 255, 255, 0.9) !important;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-bottom-color: rgba(0, 0, 0, 0.1);
-        }
-        /* Glass Card in Light Mode: Transparent White/Gray */
-        html[data-theme="light"] .glass-card {
-            background-color: rgba(255, 255, 255, 0.7); /* Slightly more opaque */
-            border-color: rgba(0, 0, 0, 0.15);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
         
         /* Text Color Adjustments for Light Mode */
         html[data-theme="light"] .dark\:text-gray-900,
         html[data-theme="light"] .dark\:text-white {
-            color: #1e293b !important; /* Slate-800 for better contrast */
+            color: #1e293b !important;
         }
         html[data-theme="light"] .dark\:text-gray-200,
         html[data-theme="light"] .dark\:text-gray-400 {
-             color: #475569 !important; /* Slate-600 */
+             color: #475569 !important;
         }
-        html[data-theme="light"] .dark\:hover\:text-blue-400:hover {
-             color: #2563eb !important; /* Blue-600 hover */
-        }
-
 
         /* Main container must be transparent to see the body background and the blur effect */
         .main-container {
@@ -96,7 +91,6 @@
         }
 
         /* --- FORM ELEMENT SPECIFIC STYLES --- */
-        /* FIX: Roll Number Input Focus Style (Updated for new aesthetic) */
         #roll-number:focus,
         select.select:focus,
         .custom-dropdown-header:focus {
@@ -122,128 +116,16 @@
              color: black !important;
         }
 
-        /* --- LAYOUT / TEXT FLOW FIX --- */
-        .max-w-3xl.mx-auto.space-y-8 {
-            max-width: 100%; 
-            padding-left: 1rem;
-            padding-right: 1rem;
+        /* --- RESULT MODAL STYLES (New) --- */
+        .modal-box.glass-card {
+            /* Apply glass properties defined by CSS variables */
+            background-color: var(--glass-card-bg-color); 
+            border: 1px solid var(--glass-card-border-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1rem;
         }
-        @media (min-width: 1024px) {
-            .max-w-3xl.mx-auto.space-y-8 {
-                max-width: 48rem;
-                padding-left: 0;
-                padding-right: 0;
-            }
-        }
-        /* Simulating the active link style */
-        .main-nav-links .active {
-            color: #1d4ed8; 
-            text-decoration: underline;
-            text-underline-offset: 8px;
-        }
-        .main-nav-links .active.dark\:text-blue-400 {
-             color: #60a5fa;
-        }
-        html[data-theme="light"] .main-nav-links .active {
-             color: #1d4ed8 !important; /* Retain strong color in light mode */
-        }
-
-
-        /* --- Custom Dropdown Styles (Integrated) --- */
-        .custom-dropdown-container {
-            position: relative;
-            width: 100%;
-        }
-        .custom-dropdown-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 3rem;
-            min-height: 3rem;
-            padding-inline-start: 1rem;
-            padding-inline-end: 1rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-        }
-        .card {
-            position: absolute;
-            z-index: 10;
-            top: 100%;
-            margin-top: 8px;
-            width: 100%;
-            user-select: none;
-            border-radius: 10px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-            display: none;
-        }
-        /* Dark Mode Dropdown Card */
-        html[data-theme="dark"] .card {
-            background-color: rgba(31, 41, 55, 0.95);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        /* Light Mode Dropdown Card */
-        html[data-theme="light"] .card {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        .card.open {
-            display: flex;
-        }
-        .card .list .element label input[type="radio"] {
-            display: none;
-        }
-        .card .list {
-            list-style-type: none;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            padding: 0px;
-        }
-        .card .list .element > label {
-            display: flex;
-            align-items: center;
-            color: #a6adbb;
-            gap: 10px;
-            transition: all 0.3s ease-out;
-            padding: 6px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        html[data-theme="light"] .card .list .element > label {
-            color: #4b5563;
-        }
-        .card .list .element label svg {
-            width: 19px;
-            height: 19px;
-            transition: all 0.3s ease-out;
-            stroke: currentColor;
-        }
-        .card .list .element label:has(input[type="radio"]:checked),
-        .card .list .element label:hover {
-            background-color: #5d93ff; 
-            color: white;
-        }
-        .card .list .element label:has(input[type="radio"]:checked) svg,
-        .card .list .element label:hover svg {
-            stroke: white;
-        }
-        .card .separator {
-            border-top: 1.5px solid rgba(255, 255, 255, 0.1);
-        }
-        html[data-theme="light"] .card .separator {
-            border-top: 1.5px solid rgba(0, 0, 0, 0.1);
-        }
-
-        /* Result Item GPA Styling */
+        
         .gpa-item {
             display: flex;
             justify-content: space-between;
@@ -265,6 +147,66 @@
              font-weight: 700;
              font-style: italic;
         }
+
+        /* --- LAYOUT FIXES --- */
+        .max-w-3xl.mx-auto.space-y-8 {
+            max-width: 100%; 
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        @media (min-width: 1024px) {
+            .max-w-3xl.mx-auto.space-y-8 {
+                max-width: 48rem;
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+        .main-nav-links .active {
+            color: #1d4ed8; 
+            text-decoration: underline;
+            text-underline-offset: 8px;
+        }
+        .main-nav-links .active.dark\:text-blue-400 {
+             color: #60a5fa;
+        }
+        html[data-theme="light"] .main-nav-links .active {
+             color: #1d4ed8 !important;
+        }
+        /* Custom Dropdown Styles (Unchanged) */
+        .custom-dropdown-container { position: relative; width: 100%; }
+        .custom-dropdown-header {
+            display: flex; justify-content: space-between; align-items: center; height: 3rem; min-height: 3rem;
+            padding-inline-start: 1rem; padding-inline-end: 1rem; border-radius: 0.5rem; cursor: pointer;
+            font-size: 0.875rem; line-height: 1.25rem;
+        }
+        .card {
+            position: absolute; z-index: 10; top: 100%; margin-top: 8px; width: 100%; user-select: none;
+            border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); display: none;
+        }
+        html[data-theme="dark"] .card {
+            background-color: rgba(31, 41, 55, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        html[data-theme="light"] .card {
+            background-color: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .card.open { display: flex; }
+        .card .list .element label input[type="radio"] { display: none; }
+        .card .list { list-style-type: none; display: flex; flex-direction: column; gap: 4px; padding: 0px; }
+        .card .list .element > label {
+            display: flex; align-items: center; color: #a6adbb; gap: 10px; transition: all 0.3s ease-out;
+            padding: 6px; border-radius: 6px; cursor: pointer; font-weight: 600;
+        }
+        html[data-theme="light"] .card .list .element > label { color: #4b5563; }
+        .card .list .element label svg {
+            width: 19px; height: 19px; transition: all 0.3s ease-out; stroke: currentColor;
+        }
+        .card .list .element label:has(input[type="radio"]:checked),
+        .card .list .element label:hover { background-color: #5d93ff; color: white; }
+        .card .list .element label:has(input[type="radio"]:checked) svg,
+        .card .list .element label:hover svg { stroke: white; }
+        .card .separator { border-top: 1.5px solid rgba(255, 255, 255, 0.1); }
+        html[data-theme="light"] .card .separator { border-top: 1.5px solid rgba(0, 0, 0, 0.1); }
     </style>
 
     <meta name="author" content="Modasser Hasan">
@@ -331,6 +273,24 @@
                     </nav>
                 </header>
                 <main class="my-4">
+                    <dialog id="result_modal" class="modal">
+                        <div class="modal-box glass-card w-11/12 max-w-sm sm:max-w-lg">
+                            <form method="dialog">
+                                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 dark:text-white text-gray-900">✕</button>
+                            </form>
+
+                            <div class="p-2 sm:p-4">
+                                <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-2" id="modal-result-title"></h2>
+                                <p class="mb-4 text-sm dark:text-gray-400 text-gray-600" id="modal-published-date-info"></p>
+                                
+                                <div id="modal-result-content" class="space-y-3 dark:text-gray-200 text-gray-700">
+                                    </div>
+                            </div>
+                        </div>
+                        <form method="dialog" class="modal-backdrop">
+                            <button>close</button>
+                        </form>
+                    </dialog>
                     <div class="p-4 sm:p-6 lg:p-8">
                         <div class="max-w-xl sm:max-w-lg mx-auto p-5 sm:p-8 rounded-2xl glass-card form-card shadow-lg">
                             <h1 class="text-2xl font-bold dark:text-white text-gray-900 mb-1">Individual Result Check</h1>
@@ -420,12 +380,6 @@
                             </div>
                         </div>
 
-                        <div class="max-w-xl sm:max-w-lg mx-auto p-5 sm:p-8 rounded-2xl glass-card form-card shadow-lg mt-8 hidden" id="result-display-section">
-                            <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-4" id="result-title"></h2>
-                            <p class="mb-4 text-sm dark:text-gray-400 text-gray-600" id="published-date-info"></p>
-                            <div id="result-content" class="space-y-3 dark:text-gray-200 text-gray-700">
-                                </div>
-                        </div>
                         
                         <div class="max-w-xl sm:max-w-lg mx-auto my-8">
                              <img 
@@ -528,8 +482,8 @@
         // --- HELPER FUNCTION TO GET SELECTED VALUE ---
         function getSelectedOptionValue(elementId) {
              const selectedElement = document.getElementById(elementId);
-             // For the custom dropdown, the value is stored as text in the span.
              if (selectedElement) {
+                // Get the text content from the selected span in the custom dropdown
                 return selectedElement.textContent.trim().toUpperCase();
              }
              return null;
@@ -540,13 +494,18 @@
             const rollNumber = document.getElementById('roll-number').value.trim();
             const exam = getSelectedOptionValue('selected-exam');
             const regulation = getSelectedOptionValue('selected-regulation');
-            const resultDisplay = document.getElementById('result-display-section');
-            const resultTitle = document.getElementById('result-title');
-            const resultContent = document.getElementById('result-content');
-            const publishedDateInfo = document.getElementById('published-date-info');
+            
+            // Modal elements
+            const resultModal = document.getElementById('result_modal');
+            const resultTitle = document.getElementById('modal-result-title');
+            const resultContent = document.getElementById('modal-result-content');
+            const publishedDateInfo = document.getElementById('modal-published-date-info');
 
-            // 1. Clear previous results and hide section
-            resultDisplay.classList.add('hidden');
+            // Close any open modal before proceeding
+            resultModal.close();
+            
+            // 1. Clear previous results
+            resultTitle.textContent = '';
             resultContent.innerHTML = '';
             publishedDateInfo.textContent = '';
             
@@ -554,39 +513,38 @@
             if (!rollNumber || rollNumber.length !== 6 || isNaN(rollNumber)) {
                 resultTitle.textContent = "Validation Error";
                 resultContent.innerHTML = '<p class="text-red-500">Please enter a valid 6-digit Roll Number.</p>';
-                resultDisplay.classList.remove('hidden');
+                resultModal.showModal();
                 return;
             }
 
-            // 3. Data Fetching (Assuming results.json is accessible via HTTP)
+            // 3. Data Fetching
             let ALL_RESULTS;
             try {
                 // Fetch the JSON file from the project root
                 const response = await fetch('results.json');
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP Error! Status: ${response.status}. Check if 'results.json' file exists.`);
+                    throw new Error(`HTTP Error! Status: ${response.status}.`);
                 }
                 ALL_RESULTS = await response.json();
             } catch (error) {
                 resultTitle.textContent = "Data Load Error";
                 resultContent.innerHTML = `<p class="text-red-500">
                     Failed to load results data (results.json). 
-                    Please ensure the file is in the same folder as this HTML and your server is running.
+                    Please ensure the file is correctly placed and accessible.
                     </p>`;
-                resultDisplay.classList.remove('hidden');
+                resultModal.showModal();
                 console.error('Error fetching results.json:', error);
                 return;
             }
 
             // 4. Data Lookup & Filtering
-            // The structure is { "data": { "rollNumber": { ... } } }
             const studentData = ALL_RESULTS.data[rollNumber];
 
             if (!studentData) {
                 resultTitle.textContent = "Result Not Found";
-                resultContent.innerHTML = '<p class="text-red-500">No result found for Roll Number ' + rollNumber + '.</p>';
-                resultDisplay.classList.remove('hidden');
+                resultContent.innerHTML = '<p class="text-red-500">No result found for Roll Number ' + rollNumber + ' with the selected criteria.</p>';
+                resultModal.showModal();
                 return;
             }
 
@@ -599,7 +557,7 @@
                  resultContent.innerHTML = `<p class="text-red-500">Result found but criteria mismatched:</p>
                                             <p class="mt-2"><strong>Found:</strong> ${dataExam} (${dataRegulation})</p>
                                             <p><strong>Selected:</strong> ${exam} (${regulation})</p>`;
-                 resultDisplay.classList.remove('hidden');
+                 resultModal.showModal();
                  return;
             }
 
@@ -615,21 +573,23 @@
                 
                 // Map gpa keys to user-friendly names
                 const gpaMap = { 
-                    'gpa1': '1st Semester', 
-                    'gpa2': '2nd Semester', 
-                    'gpa3': '3rd Semester', 
-                    'gpa4': '4th Semester',
-                    'gpa5': '5th Semester',
-                    'gpa6': '6th Semester',
-                    'gpa7': '7th Semester',
-                    'gpa8': '8th Semester'
+                    'gpa1': '1st Semester', 'gpa2': '2nd Semester', 
+                    'gpa3': '3rd Semester', 'gpa4': '4th Semester',
+                    'gpa5': '5th Semester', 'gpa6': '6th Semester',
+                    'gpa7': '7th Semester', 'gpa8': '8th Semester'
                 };
                 
-                Object.keys(gpaMap).forEach(key => {
+                // Sort keys numerically (gpa1, gpa2, ...)
+                const sortedGpaKeys = Object.keys(gpas).filter(key => key.startsWith('gpa')).sort((a, b) => {
+                    return parseInt(a.substring(3)) - parseInt(b.substring(3));
+                });
+
+
+                sortedGpaKeys.forEach(key => {
                     const semesterName = gpaMap[key];
                     let gpaValue = gpas[key];
                     
-                    if (gpaValue !== undefined) {
+                    if (gpaValue !== undefined && semesterName) {
                         let displayValue = '';
                         let valueClass = 'gpa-value';
 
@@ -637,7 +597,6 @@
                             displayValue = 'Referred (Ref)';
                             valueClass = 'ref-status';
                         } else {
-                            // Ensure it's treated as a number for formatting
                             const gpaNumber = parseFloat(gpaValue);
                             displayValue = gpaNumber.toFixed(2);
                             if (gpaNumber < 2.00) valueClass = 'ref-status';
@@ -670,13 +629,14 @@
                      `;
                  }
             } else if (studentData.results && Object.values(studentData.results).every(gpa => gpa !== 'ref' && parseFloat(gpa) >= 2.00)) {
-                 // Check if the student passed all subjects and has GPA for all semesters present
+                 // Final check for a clean passing status
                  resultHTML += '<p class="text-green-500 font-bold mt-6">Congratulations! No referral found.</p>';
             }
 
 
             resultContent.innerHTML = resultHTML;
-            resultDisplay.classList.remove('hidden');
+            // Show the final modal
+            resultModal.showModal();
         }
 
         // --- THEME TOGGLE JS (EXISTING CODE) ---
@@ -728,7 +688,7 @@
             });
             const menu = header.nextElementSibling;
             menu.classList.toggle('open');
-            // Give header a focus style when open (optional, but good for accessibility/UX)
+            // Give header a focus style when open
             header.classList.toggle('ring-2', menu.classList.contains('open'));
             header.classList.toggle('ring-offset-2', menu.classList.contains('open'));
             header.classList.toggle('ring-blue-500', menu.classList.contains('open'));
