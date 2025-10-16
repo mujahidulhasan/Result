@@ -171,6 +171,19 @@
         .card .list .element label svg {
             width: 19px; height: 19px; transition: all 0.3s ease-out; stroke: currentColor;
         }
+        /* Adjusted dropdown styles to remove default icons */
+        .card .list .element label > * { 
+            /* Target all child elements in label */
+            display: inline-block;
+        }
+        .card .list .element label i.fa-solid {
+            /* Keep Font Awesome icons visible if they were added manually in the HTML */
+            font-size: 1.1em;
+            width: 19px;
+            text-align: center;
+        }
+        /* End of dropdown style adjustment */
+
         .card .list .element label:has(input[type="radio"]:checked),
         .card .list .element label:hover { background-color: #5d93ff; color: white; }
         .card .list .element label:has(input[type="radio"]:checked) svg,
@@ -501,7 +514,6 @@
                                             <li class="element">
                                                 <label for="exam-eng" onclick="selectOption('exam-eng', 'Diploma in Engineering', 'selected-exam')">
                                                     <input type="radio" id="exam-eng" name="exam-filed" value="DIPLOMA IN ENGINEERING" checked />
-                                                    <i class="fa-solid fa-graduation-cap"></i>
                                                     Diploma in Engineering
                                                 </label>
                                             </li>
@@ -509,7 +521,6 @@
                                             <li class="element">
                                                 <label for="exam-textile" onclick="selectOption('exam-textile', 'Diploma in Textile', 'selected-exam')">
                                                     <input type="radio" id="exam-textile" name="exam-filed" value="DIPLOMA IN TEXTILE" />
-                                                    <i class="fa-solid fa-shirt"></i>
                                                     Diploma in Textile
                                                 </label>
                                             </li>
@@ -534,7 +545,6 @@
                                             <li class="element">
                                                 <label for="reg-2022" onclick="selectOption('reg-2022', '2022', 'selected-regulation')">
                                                     <input type="radio" id="reg-2022" name="regulation-field" value="2022" checked />
-                                                    <i class="fa-solid fa-calendar-check"></i>
                                                     2022
                                                 </label>
                                             </li>
@@ -542,7 +552,6 @@
                                             <li class="element">
                                                 <label for="reg-2016" onclick="selectOption('reg-2016', '2016', 'selected-regulation')">
                                                     <input type="radio" id="reg-2016" name="regulation-field" value="2016" />
-                                                    <i class="fa-solid fa-calendar-day"></i>
                                                     2016
                                                 </label>
                                             </li>
@@ -603,6 +612,15 @@
                     </div>
                 </main>
                 <footer class="p-10 pb-3 glass-card">
+                    
+                    <div class="flex flex-col items-center mb-6">
+                        <img 
+                            src="Picsart_25-09-19_23-53-57-460.jpg-fcb72ab0-f04a-4ebf-9071-67e25c2406b0" 
+                            alt="Author Photo" 
+                            class="w-20 h-20 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+                        >
+                        <p class="font-semibold text-lg dark:text-white text-gray-900 mt-2">Mujahidul Hasan</p>
+                    </div>
                     <div class="flex flex-col items-center md:flex-row justify-between gap-5 dark:text-white text-gray-900">
                         <div class="text-center md:text-left">
                             <h1 class="text-2xl font-lato font-semibold">BTEB Result Hub</h1>
@@ -676,25 +694,17 @@
             const gpaNumber = parseFloat(gpa);
 
             if (gpaValue === 'ref' || gpaNumber < 2.00) {
-                return { class: 'grade-ref', text: gpaValue === 'ref' ? 'Referred (Ref)' : gpaNumber.toFixed(2) + ' (F)', status: 'Referred' };
+                // Red for Fail/Ref
+                return { class: 'grade-ref', text: gpaNumber.toFixed(2), status: 'Referred' };
             } else if (gpaNumber >= 4.00) {
-                // Golden (A+)
-                return { class: 'grade-aplus', text: gpaNumber.toFixed(2) + ' (A+)', status: 'Passed' };
+                // Golden for A+ (4.00)
+                return { class: 'grade-aplus', text: gpaNumber.toFixed(2), status: 'Passed' };
             } else if (gpaNumber >= 3.50) {
-                // Yellow (A, A-)
-                const letter = gpaNumber >= 3.75 ? 'A' : 'A-';
-                return { class: 'grade-a-high', text: gpaNumber.toFixed(2) + ` (${letter})`, status: 'Passed' };
+                // Yellow for A/A- (3.75 - 3.50)
+                return { class: 'grade-a-high', text: gpaNumber.toFixed(2), status: 'Passed' };
             } else {
-                // Green (B+ to D)
-                let letter;
-                if (gpaNumber >= 3.25) letter = 'B+';
-                else if (gpaNumber >= 3.00) letter = 'B';
-                else if (gpaNumber >= 2.75) letter = 'B-';
-                else if (gpaNumber >= 2.50) letter = 'C+';
-                else if (gpaNumber >= 2.25) letter = 'C';
-                else letter = 'D'; // 2.00 to 2.24
-                
-                return { class: 'grade-pass', text: gpaNumber.toFixed(2) + ` (${letter})`, status: 'Passed' };
+                // Green for B+ to D (3.25 - 2.00)
+                return { class: 'grade-pass', text: gpaNumber.toFixed(2), status: 'Passed' };
             }
         }
         
@@ -702,12 +712,15 @@
         function takeScreenshot() {
           const popup = document.getElementById("popup-main-content"); 
           
-          // Temporarily hide the buttons for a clean screenshot
+          // Screenshot works best if we hide the buttons only during the capture process
           const ssBtn = document.querySelector('#popup-main-content .screenshot-btn');
           const closeBtn = document.querySelector('#popup-main-content .close-btn');
-          ssBtn.style.display = 'none';
-          closeBtn.style.display = 'none';
+
+          // Temporarily hide buttons for clean capture
+          ssBtn.style.visibility = 'hidden';
+          closeBtn.style.visibility = 'hidden';
           
+          // HTML2Canvas starts here
           html2canvas(popup, { 
               scale: 3,
               backgroundColor: null 
@@ -717,9 +730,9 @@
             link.href = canvas.toDataURL("image/png");
             link.click();
             
-            // Show buttons again
-            ssBtn.style.display = 'flex';
-            closeBtn.style.display = 'block';
+            // Show buttons again after capture
+            ssBtn.style.visibility = 'visible';
+            closeBtn.style.visibility = 'visible';
           });
         }
         
@@ -728,6 +741,7 @@
 
         async function loadResultsJSON() {
             try {
+                // Use the file accessible via the context
                 const response = await fetch('results.json', { cache: "no-store" });
                 if (!response.ok) {
                     throw new Error(`HTTP Error! Status: ${response.status}.`);
@@ -811,7 +825,9 @@
             let referredSubjectsHTML = '';
             const allResults = studentData.results || {};
             const referred = studentData.referred_subjects || [];
-            const publishedDate = studentData.published_date || 'N/A'; // Fetch overall published date
+            // Fetch overall published date and Institute Name
+            const instituteName = studentData.institute_name || 'Institute N/A';
+            const publishedDate = studentData.published_date || 'N/A'; 
 
             // Map gpa keys to user-friendly names
             const gpaMap = { 
@@ -842,7 +858,7 @@
                             <div class="status-${statusText.toLowerCase()}">${statusText}</div>
                             <div class="date">${semDate}</div>
                           </div>
-                          <div class="cgpa ${gradeClass}">CGPA: ${displayText}</div>
+                          <div class="cgpa ${gradeClass}">${displayText}</div>
                         </div>
                     `;
                 }
@@ -870,7 +886,7 @@
                   <form method="dialog"><button class="close-btn">&times;</button></form>
 
                   <div class="popup-header">
-                    <p>${studentData.institute_name || 'Institute N/A'}</p>
+                    <p class="font-bold">${instituteName}</p>
                     <h2>Roll: ${rollNumber}</h2>
                     <p>${studentData.exam || 'N/A'} (${studentData.regulation || 'N/A'})</p>
                     <p class="mt-2 text-xs dark:text-gray-400 text-gray-700">Result Published: ${publishedDate}</p>
