@@ -7,6 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     
     <style>
         /* Import Fonts */
@@ -115,39 +116,7 @@
              border-color: rgba(0, 0, 0, 0.1) !important;
              color: black !important;
         }
-
-        /* --- RESULT MODAL STYLES (New) --- */
-        .modal-box.glass-card {
-            /* Apply glass properties defined by CSS variables */
-            background-color: var(--glass-card-bg-color); 
-            border: 1px solid var(--glass-card-border-color);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 1rem;
-        }
         
-        .gpa-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid;
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        html[data-theme="light"] .gpa-item {
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .gpa-value {
-            font-weight: 700;
-            color: #60a5fa; /* Blue-400 */
-        }
-        /* Reflected subjects warning color */
-        .ref-status {
-             color: #ef4444; /* Red-500 */
-             font-weight: 700;
-             font-style: italic;
-        }
-
         /* --- LAYOUT FIXES --- */
         .max-w-3xl.mx-auto.space-y-8 {
             max-width: 100%; 
@@ -207,6 +176,230 @@
         .card .list .element label:hover svg { stroke: white; }
         .card .separator { border-top: 1.5px solid rgba(255, 255, 255, 0.1); }
         html[data-theme="light"] .card .separator { border-top: 1.5px solid rgba(0, 0, 0, 0.1); }
+
+
+        /* --- NEW CUSTOM RESULT POPUP STYLES (from your new code) --- */
+        /* Reset font for consistency, using existing font */
+        .popup * {
+            font-family: 'Ubuntu', sans-serif;
+            box-sizing: border-box;
+        }
+
+        /* Base popup container styling */
+        #popup-container {
+            max-width: 420px;
+            padding: 0;
+            margin: 0 auto;
+            width: 90%;
+        }
+        .popup {
+            position: relative;
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            background-color: rgba(17, 25, 40, 0.55);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+            padding: 22px;
+            transition: all 0.3s ease;
+            color: #fff; /* Base text color for dark glass theme */
+        }
+        html[data-theme="light"] .popup {
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            color: #1e293b; /* Base text color for light glass theme */
+        }
+
+
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            color: #fff; /* Dark mode color */
+        }
+        html[data-theme="light"] .close-btn {
+            color: #1e293b; /* Light mode color */
+        }
+        .close-btn:hover {
+            color: #ff4c4c;
+        }
+
+        /* Screenshot icon button */
+        .screenshot-btn {
+            position: absolute;
+            top: 10px;
+            left: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.1rem;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        html[data-theme="light"] .screenshot-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #1e293b;
+        }
+        .screenshot-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        html[data-theme="light"] .screenshot-btn:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+
+        .popup-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .popup-header p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+        html[data-theme="light"] .popup-header p {
+            color: #475569;
+        }
+
+        /* ===== RESULT CARD ===== */
+        .result-card {
+            margin: 12px 0;
+        }
+
+        .semester-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .semester-header span {
+            flex: 1;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .semester-header .status-passed {
+            flex: 1;
+            text-align: center;
+            color: #00ff99;
+            font-weight: 600;
+        }
+        .semester-header .status-referred {
+            flex: 1;
+            text-align: center;
+            color: #ff4c4c;
+            font-weight: 600;
+        }
+
+
+        .semester-header .date {
+            flex: 1;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        html[data-theme="light"] .semester-header .date {
+            color: #475569;
+        }
+
+        /* ===== GRADE GLOW & COLORS ===== */
+        .cgpa {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 10px 0;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cgpa::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: linear-gradient(
+              120deg,
+              rgba(255, 255, 255, 0) 0%,
+              rgba(255, 255, 255, 0.45) 50%,
+              rgba(255, 255, 255, 0) 100%
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -150%; }
+            50% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        .grade-aplus {
+            background: linear-gradient(135deg, #ffd700, #ffea8a);
+            color: #5a4200;
+            box-shadow: 0 0 20px #ffd700a8;
+        }
+
+        .grade-a {
+            background: linear-gradient(135deg, #00ff88, #7fffbd);
+            color: #003a1f;
+            box-shadow: 0 0 20px #00ff88a8;
+        }
+
+        .grade-aminus {
+            background: linear-gradient(135deg, #ffe96a, #fff6b1);
+            color: #553e00;
+            box-shadow: 0 0 20px #ffe96aa8;
+        }
+
+        /* New: Color for 'Ref' status in the GPA section */
+        .grade-ref {
+            background: linear-gradient(135deg, #ef4444, #fca5a5); /* Red-500 to Red-300 */
+            color: #450a0a; /* Red-900 */
+            box-shadow: 0 0 20px #ef4444a8;
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .popup {
+              padding: 16px;
+            }
+            .popup-header h2 {
+              font-size: 1.2rem;
+            }
+            .semester-header span,
+            .semester-header .status,
+            .semester-header .date {
+              font-size: 0.9rem;
+            }
+            .cgpa {
+              font-size: 1rem;
+            }
+        }
     </style>
 
     <meta name="author" content="Modasser Hasan">
@@ -274,19 +467,8 @@
                 </header>
                 <main class="my-4">
                     <dialog id="result_modal" class="modal">
-                        <div class="modal-box glass-card w-11/12 max-w-sm sm:max-w-lg">
-                            <form method="dialog">
-                                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 dark:text-white text-gray-900">✕</button>
-                            </form>
-
-                            <div class="p-2 sm:p-4">
-                                <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-2" id="modal-result-title"></h2>
-                                <p class="mb-4 text-sm dark:text-gray-400 text-gray-600" id="modal-published-date-info"></p>
-                                
-                                <div id="modal-result-content" class="space-y-3 dark:text-gray-200 text-gray-700">
-                                    </div>
+                        <div class="modal-box p-0 bg-transparent shadow-none" id="popup-container">
                             </div>
-                        </div>
                         <form method="dialog" class="modal-backdrop">
                             <button>close</button>
                         </form>
@@ -470,7 +652,7 @@
                         <li><a href="/group-results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.2" baseProfile="tiny" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.381 0 2.631-.56 3.536-1.465.904-.904 1.464-2.154 1.464-3.535s-.56-2.631-1.464-3.535c-.905-.905-2.155-1.465-3.536-1.465s-2.631.56-3.536 1.465c-.904.904-1.464 2.154-1.464 3.535s.56 2.631 1.464 3.535c.905.905 2.155 1.465 3.536 1.465zM20 15c.69 0 1.315-.279 1.768-.731.453-.452.732-1.077.732-1.769 0-.69-.279-1.315-.732-1.768-.453-.453-1.078-.732-1.768-.732-.691 0-1.316.279-1.769.732-.452.453-.731 1.078-.731 1.768 0 .691.279 1.316.731 1.769s1.078.731 1.769.731zM20 15.59c-1.331 0-2.332.406-2.917.968-1.115-.917-2.878-1.558-5.083-1.558-2.266 0-3.995.648-5.092 1.564-.596-.565-1.608-.974-2.908-.974-2.188 0-3.5 1.09-3.5 2.182 0 .545 1.312 1.092 3.5 1.092.604 0 1.146-.051 1.623-.133l-.04.27c0 1 2.406 2 6.417 2 3.762 0 6.417-1 6.417-2l-.02-.255c.463.073.995.118 1.603.118 2.051 0 3.5-.547 3.5-1.092 0-1.092-1.373-2.182-3.5-2.182zM4 15c.69 0 1.315-.279 1.768-.732.453-.453.732-1.078.732-1.768 0-.689-.279-1.314-.732-1.768-.453-.452-1.078-.732-1.768-.732-.691 0-1.316.28-1.769.732-.452.454-.731 1.079-.731 1.768 0 .69.279 1.315.731 1.768.453.453 1.078.732 1.769.732z"></path></svg>Group Result</a></li>
                         <li><a href="/cgpa-calculator"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM440.2 765h-50.8c-2.2 0-4.5-1.1-5.9-2.9L348 718.6l-35.5 43.5a7.38 7.38 0 0 1-5.9 2.9h-50.8c-6.6 0-10.2-7.9-5.8-13.1l62.7-76.8-61.2-74.9c-4.3-5.2-.7-13.1 5.9-13.1h50.9c2.2 0 4.5 1.1 5.9 2.9l34 41.6 34-41.6c1.5-1.9 3.6-2.9 5.9-2.9h50.8c6.6 0 10.2 7.9 5.9 13.1L383.5 675l62.7 76.8c4.2 5.3.6 13.2-6 13.2zm7.8-382c0 2.2-1.4 4-3.2 4H376v68.7c0 1.9-1.8 3.3-4 3.3h-48c-2.2 0-4-1.4-4-3.2V387h-68.8c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4H320v-68.8c0-1.8 1.8-3.2 4-3.2h48c2.2 0 4 1.4 4 3.2V331h68.7c1.9 0 3.3 1.8 3.3 4v48zm328 369c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48zm0-104c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48zm0-265c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48z"></path></svg>CGPA Calculator</a></li>
                         <li><a href="/booklists"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"></path></svg>Booklists</a></li>
-                        <li><a href="/about"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"></path></svg>About</a></li>
+                        <li><a href="/about"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"></path></svg>About</a></li>
                         <li><a href="mailto:mujahidulhasan2@gmail.com"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56zm-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26z"></path></svg>Contact</a></li>
                     </ul>
                 </div>
@@ -489,152 +671,205 @@
              return null;
         }
 
+        // --- GRADING SCALE HELPER (Based on your new design's color variants) ---
+        function getGradeClassAndText(gpa) {
+            const gpaValue = String(gpa).toLowerCase();
+            const gpaNumber = parseFloat(gpa);
+
+            if (gpaValue === 'ref') {
+                return { class: 'grade-ref', text: 'Referred (Ref)', status: 'Referred' };
+            } else if (gpaNumber >= 3.60) {
+                return { class: 'grade-aplus', text: gpaNumber.toFixed(2) + ' (A+)', status: 'Passed' };
+            } else if (gpaNumber >= 3.20) {
+                return { class: 'grade-a', text: gpaNumber.toFixed(2) + ' (A)', status: 'Passed' };
+            } else if (gpaNumber >= 2.80) {
+                return { class: 'grade-aminus', text: gpaNumber.toFixed(2) + ' (A-)', status: 'Passed' };
+            } else if (gpaNumber >= 2.00) {
+                 return { class: 'grade-a', text: gpaNumber.toFixed(2) + ' (B/C)', status: 'Passed' }; // Use 'A' color for general pass
+            } else {
+                 return { class: 'grade-ref', text: gpaNumber.toFixed(2) + ' (Failed)', status: 'Referred' };
+            }
+        }
+        
+        // Function to handle the screenshot (Requires html2canvas)
+        function takeScreenshot() {
+          const popup = document.getElementById("popup-main-content"); // Target the main popup div
+          // Temporarily hide the buttons for a clean screenshot
+          const ssBtn = document.querySelector('#popup-main-content .screenshot-btn');
+          const closeBtn = document.querySelector('#popup-main-content .close-btn');
+          ssBtn.style.display = 'none';
+          closeBtn.style.display = 'none';
+          
+          html2canvas(popup, { 
+              scale: 3,
+              backgroundColor: null 
+            }).then(canvas => {
+            const link = document.createElement("a");
+            link.download = "Result_Roll_" + document.getElementById('roll-number').value.trim() + ".png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+            
+            // Show buttons again
+            ssBtn.style.display = 'flex';
+            closeBtn.style.display = 'block';
+          });
+        }
+        
+        // Results data store
+        let ALL_RESULTS = {};
+
+        async function loadResultsJSON() {
+            try {
+                const response = await fetch('results.json', { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error(`HTTP Error! Status: ${response.status}.`);
+                }
+                const data = await response.json();
+                ALL_RESULTS = data.data || {}; // Assuming results.json has a top-level 'data' key
+            } catch (error) {
+                console.error('Error fetching results.json:', error);
+                ALL_RESULTS = {}; // Clear if loading fails
+            }
+        }
+
+
         // --- ASYNCHRONOUS RESULT LOOKUP LOGIC ---
         async function getResults() {
             const rollNumber = document.getElementById('roll-number').value.trim();
             const exam = getSelectedOptionValue('selected-exam');
             const regulation = getSelectedOptionValue('selected-regulation');
-            
+
             // Modal elements
             const resultModal = document.getElementById('result_modal');
-            const resultTitle = document.getElementById('modal-result-title');
-            const resultContent = document.getElementById('modal-result-content');
-            const publishedDateInfo = document.getElementById('modal-published-date-info');
+            const popupContainer = document.getElementById('popup-container');
 
             // Close any open modal before proceeding
             resultModal.close();
-            
+
             // 1. Clear previous results
-            resultTitle.textContent = '';
-            resultContent.innerHTML = '';
-            publishedDateInfo.textContent = '';
+            popupContainer.innerHTML = '';
             
             // 2. Basic Input Validation
             if (!rollNumber || rollNumber.length !== 6 || isNaN(rollNumber)) {
-                resultTitle.textContent = "Validation Error";
-                resultContent.innerHTML = '<p class="text-red-500">Please enter a valid 6-digit Roll Number.</p>';
+                popupContainer.innerHTML = `
+                    <div class="popup text-center dark:text-white text-gray-900">
+                        <h2 class="text-xl font-bold mb-2">Validation Error</h2>
+                        <p class="text-red-500">Please enter a valid 6-digit Roll Number.</p>
+                        <form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form>
+                    </div>
+                `;
                 resultModal.showModal();
                 return;
             }
 
-            // 3. Data Fetching
-            let ALL_RESULTS;
-            try {
-                // Fetch the JSON file from the project root
-                const response = await fetch('results.json');
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP Error! Status: ${response.status}.`);
-                }
-                ALL_RESULTS = await response.json();
-            } catch (error) {
-                resultTitle.textContent = "Data Load Error";
-                resultContent.innerHTML = `<p class="text-red-500">
-                    Failed to load results data (results.json). 
-                    Please ensure the file is correctly placed and accessible.
-                    </p>`;
-                resultModal.showModal();
-                console.error('Error fetching results.json:', error);
-                return;
-            }
-
+            // 3. Ensure data is loaded
+            if (Object.keys(ALL_RESULTS).length === 0) await loadResultsJSON();
+            
             // 4. Data Lookup & Filtering
-            const studentData = ALL_RESULTS.data[rollNumber];
+            const studentData = ALL_RESULTS[rollNumber];
 
             if (!studentData) {
-                resultTitle.textContent = "Result Not Found";
-                resultContent.innerHTML = '<p class="text-red-500">No result found for Roll Number ' + rollNumber + ' with the selected criteria.</p>';
+                popupContainer.innerHTML = `
+                    <div class="popup text-center dark:text-white text-gray-900">
+                        <h2 class="text-xl font-bold mb-2">Result Not Found</h2>
+                        <p class="text-red-500">No result found for Roll Number ${rollNumber} with the selected criteria.</p>
+                        <form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form>
+                    </div>
+                `;
                 resultModal.showModal();
                 return;
             }
 
             // 5. Final Criteria Check
-            const dataExam = studentData.exam.trim().toUpperCase();
-            const dataRegulation = studentData.regulation.trim().toUpperCase();
+            const dataExam = (studentData.exam || '').trim().toUpperCase();
+            const dataRegulation = (studentData.regulation || '').trim().toUpperCase();
 
             if (dataExam !== exam || dataRegulation !== regulation) {
-                 resultTitle.textContent = "Criteria Mismatch";
-                 resultContent.innerHTML = `<p class="text-red-500">Result found but criteria mismatched:</p>
-                                            <p class="mt-2"><strong>Found:</strong> ${dataExam} (${dataRegulation})</p>
-                                            <p><strong>Selected:</strong> ${exam} (${regulation})</p>`;
-                 resultModal.showModal();
-                 return;
+                 popupContainer.innerHTML = `
+                    <div class="popup text-center dark:text-white text-gray-900">
+                        <h2 class="text-xl font-bold mb-2">Criteria Mismatch</h2>
+                        <p class="text-red-500">Result found but criteria mismatched:</p>
+                        <p class="mt-2"><strong>Found:</strong> ${dataExam} (${dataRegulation})</p>
+                        <p><strong>Selected:</strong> ${exam} (${regulation})</p>
+                        <form method="dialog"><button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button></form>
+                    </div>
+                `;
+                resultModal.showModal();
+                return;
             }
 
-            // 6. Display Result
-            resultTitle.textContent = "Result for Roll: " + rollNumber;
-            publishedDateInfo.textContent = "Published Date: " + (studentData.published_date || 'N/A');
-            let resultHTML = '';
-
-            // --- Display GPA ---
-            if (studentData.results) {
-                resultHTML += '<h3 class="text-lg font-bold dark:text-white text-gray-900 mt-4">Semester GPA</h3>';
-                const gpas = studentData.results;
-                
-                // Map gpa keys to user-friendly names
-                const gpaMap = { 
-                    'gpa1': '1st Semester', 'gpa2': '2nd Semester', 
-                    'gpa3': '3rd Semester', 'gpa4': '4th Semester',
-                    'gpa5': '5th Semester', 'gpa6': '6th Semester',
-                    'gpa7': '7th Semester', 'gpa8': '8th Semester'
-                };
-                
-                // Sort keys numerically (gpa1, gpa2, ...)
-                const sortedGpaKeys = Object.keys(gpas).filter(key => key.startsWith('gpa')).sort((a, b) => {
-                    return parseInt(a.substring(3)) - parseInt(b.substring(3));
-                });
-
-
-                sortedGpaKeys.forEach(key => {
-                    const semesterName = gpaMap[key];
-                    let gpaValue = gpas[key];
-                    
-                    if (gpaValue !== undefined && semesterName) {
-                        let displayValue = '';
-                        let valueClass = 'gpa-value';
-
-                        if (typeof gpaValue === 'string' && gpaValue.toLowerCase() === 'ref') {
-                            displayValue = 'Referred (Ref)';
-                            valueClass = 'ref-status';
-                        } else {
-                            const gpaNumber = parseFloat(gpaValue);
-                            displayValue = gpaNumber.toFixed(2);
-                            if (gpaNumber < 2.00) valueClass = 'ref-status';
-                        }
-
-                         resultHTML += `
-                            <div class="gpa-item">
-                                <span>${semesterName}:</span>
-                                <span class="${valueClass}">${displayValue}</span>
-                            </div>
-                        `;
-                    }
-                });
-            }
-
-
-            // --- Display Referred Subjects ---
+            // 6. Display Result (New Stylish Popup)
+            let resultsHTML = '';
+            let referredSubjectsHTML = '';
+            const allResults = studentData.results || {};
             const referred = studentData.referred_subjects || [];
 
-            if (referred.length > 0) {
-                 const subjects = referred.filter(s => s && s.length > 2);
-                 if (subjects.length > 0) {
-                     resultHTML += `
-                         <h3 class="text-lg font-bold text-red-500 dark:text-red-400 mt-6">
-                             Referred Subjects (${subjects.length})
-                         </h3>
-                         <ul class="list-disc list-inside space-y-1 ml-4 text-red-500 dark:text-red-400">
-                             ${subjects.map(s => `<li>${s}</li>`).join('')}
+            // Map gpa keys to user-friendly names
+            const gpaMap = { 
+                'gpa1': '1st Semester', 'gpa2': '2nd Semester', 
+                'gpa3': '3rd Semester', 'gpa4': '4th Semester',
+                'gpa5': '5th Semester', 'gpa6': '6th Semester',
+                'gpa7': '7th Semester', 'gpa8': '8th Semester'
+            };
+            
+            // Sort keys numerically (gpa1, gpa2, ...) and reverse for latest first
+            const sortedGpaKeys = Object.keys(allResults).filter(key => key.startsWith('gpa')).sort((a, b) => {
+                return parseInt(b.substring(3)) - parseInt(a.substring(3)); // Reverse sort
+            });
+
+
+            sortedGpaKeys.forEach(key => {
+                const semesterName = gpaMap[key];
+                const gpaValue = allResults[key];
+                const publishedDate = studentData.dates?.[key] || 'N/A'; // Use specific date if available
+                
+                if (gpaValue !== undefined && semesterName) {
+                    const { class: gradeClass, text: displayText, status: statusText } = getGradeClassAndText(gpaValue);
+
+                    resultsHTML += `
+                        <div class="result-card">
+                          <div class="semester-header">
+                            <span>${semesterName}</span>
+                            <div class="status-${statusText.toLowerCase()}">${statusText}</div>
+                            <div class="date">${publishedDate}</div>
+                          </div>
+                          <div class="cgpa ${gradeClass}">CGPA: ${displayText}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            // Add Referred Subjects section if any
+            const validReferred = referred.filter(s => s && s.length > 2);
+            if (validReferred.length > 0) {
+                 referredSubjectsHTML = `
+                     <div class="mt-6 p-4 rounded-lg bg-red-800/20 border border-red-500/50">
+                         <h3 class="text-lg font-bold text-red-400 mb-2">Referred Subjects (${validReferred.length})</h3>
+                         <ul class="list-disc list-inside space-y-1 ml-4 text-red-300">
+                             ${validReferred.map(s => `<li>${s}</li>`).join('')}
                          </ul>
-                     `;
-                 }
-            } else if (studentData.results && Object.values(studentData.results).every(gpa => gpa !== 'ref' && parseFloat(gpa) >= 2.00)) {
-                 // Final check for a clean passing status
-                 resultHTML += '<p class="text-green-500 font-bold mt-6">Congratulations! No referral found.</p>';
+                     </div>
+                 `;
             }
 
+            // Final Result Card Structure
+            popupContainer.innerHTML = `
+                <div class="popup" id="popup-main-content">
+                  <button class="screenshot-btn" onclick="takeScreenshot()">📸</button>
+                  <form method="dialog"><button class="close-btn">&times;</button></form>
 
-            resultContent.innerHTML = resultHTML;
+                  <div class="popup-header">
+                    <h2>Roll: ${rollNumber}</h2>
+                    <p>${studentData.exam || 'N/A'} (${studentData.regulation || 'N/A'})</p>
+                    <p>${studentData.institute_name || 'Institute N/A'}</p>
+                  </div>
+
+                  ${resultsHTML}
+
+                  ${referredSubjectsHTML}
+                </div>
+            `;
+            
             // Show the final modal
             resultModal.showModal();
         }
@@ -725,6 +960,9 @@
                 }
             });
         });
+
+        // Initialize data load
+        document.addEventListener('DOMContentLoaded', loadResultsJSON);
     </script>
 
 </body>
