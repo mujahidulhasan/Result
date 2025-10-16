@@ -142,7 +142,7 @@
         html[data-theme="light"] .main-nav-links .active {
              color: #1d4ed8 !important;
         }
-        /* Custom Dropdown Styles (Unchanged) */
+        /* Custom Dropdown Styles (Icons Removed in HTML, keeping only layout styles) */
         .custom-dropdown-container { position: relative; width: 100%; }
         .custom-dropdown-header {
             display: flex; justify-content: space-between; align-items: center; height: 3rem; min-height: 3rem;
@@ -168,26 +168,8 @@
             padding: 6px; border-radius: 6px; cursor: pointer; font-weight: 600;
         }
         html[data-theme="light"] .card .list .element > label { color: #4b5563; }
-        .card .list .element label svg {
-            width: 19px; height: 19px; transition: all 0.3s ease-out; stroke: currentColor;
-        }
-        /* Adjusted dropdown styles to remove default icons */
-        .card .list .element label > * { 
-            /* Target all child elements in label */
-            display: inline-block;
-        }
-        .card .list .element label i.fa-solid {
-            /* Keep Font Awesome icons visible if they were added manually in the HTML */
-            font-size: 1.1em;
-            width: 19px;
-            text-align: center;
-        }
-        /* End of dropdown style adjustment */
-
         .card .list .element label:has(input[type="radio"]:checked),
         .card .list .element label:hover { background-color: #5d93ff; color: white; }
-        .card .list .element label:has(input[type="radio"]:checked) svg,
-        .card .list .element label:hover svg { stroke: white; }
         .card .separator { border-top: 1.5px solid rgba(255, 255, 255, 0.1); }
         html[data-theme="light"] .card .separator { border-top: 1.5px solid rgba(0, 0, 0, 0.1); }
 
@@ -283,7 +265,13 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
+        /* Institute Name is the top paragraph */
+        .popup-header > p:first-child {
+             font-size: 1rem;
+             font-weight: 700;
+             margin-bottom: 8px;
+             color: #60a5fa; /* Blue accent color */
+        }
         .popup-header h2 {
             margin: 0;
             font-size: 1.4rem;
@@ -573,7 +561,7 @@
                         
                         <div class="max-w-xl sm:max-w-lg mx-auto my-8">
                              <img 
-                                src="active-student-engagement-in-a-digital-classroom-art-illustration-creative-learning-environment-dynamic-perspective-educational-concept-free-png.png" 
+                                src="image/illustration/illustration 1.png" 
                                 alt="Active Student Engagement Illustration" 
                                 class="block w-full h-auto rounded-lg"
                             >
@@ -613,14 +601,6 @@
                 </main>
                 <footer class="p-10 pb-3 glass-card">
                     
-                    <div class="flex flex-col items-center mb-6">
-                        <img 
-                            src="Picsart_25-09-19_23-53-57-460.jpg-fcb72ab0-f04a-4ebf-9071-67e25c2406b0" 
-                            alt="Author Photo" 
-                            class="w-20 h-20 rounded-full object-cover border-4 border-blue-500 shadow-lg"
-                        >
-                        <p class="font-semibold text-lg dark:text-white text-gray-900 mt-2">Mujahidul Hasan</p>
-                    </div>
                     <div class="flex flex-col items-center md:flex-row justify-between gap-5 dark:text-white text-gray-900">
                         <div class="text-center md:text-left">
                             <h1 class="text-2xl font-lato font-semibold">BTEB Result Hub</h1>
@@ -635,7 +615,15 @@
                         </ul>
                     </div>
                     
-                    <div class="flex justify-center gap-5 text-xl border-y dark:border-gray-700 border-gray-400 my-5 py-5 dark:text-white text-gray-900">
+                    <div class="flex flex-col items-center border-t dark:border-gray-700 border-gray-400 pt-5 mt-5">
+                        <img 
+                            src="image/developer/developer.jpg" 
+                            alt="Developer Photo" 
+                            class="w-20 h-20 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+                        >
+                        <p class="font-semibold text-lg dark:text-white text-gray-900 mt-2">Mujahidul Hasan</p>
+                    </div>
+                    <div class="flex justify-center gap-5 text-xl dark:border-gray-700 border-gray-400 my-5 py-5 dark:text-white text-gray-900">
                         <a href="https://www.facebook.com/mujahidulhasan2" target="_blank" title="Facebook">
                             <i class="fa-brands fa-square-facebook"></i>
                         </a>
@@ -825,9 +813,11 @@
             let referredSubjectsHTML = '';
             const allResults = studentData.results || {};
             const referred = studentData.referred_subjects || [];
-            // Fetch overall published date and Institute Name
+            
+            // Fetch required data for the header
             const instituteName = studentData.institute_name || 'Institute N/A';
-            const publishedDate = studentData.published_date || 'N/A'; 
+            const resultExamText = `${studentData.exam || 'N/A'} (${studentData.regulation || 'N/A'})`;
+            const overallPublishedDate = studentData.published_date || 'N/A'; // Overall result date
 
             // Map gpa keys to user-friendly names
             const gpaMap = { 
@@ -846,7 +836,7 @@
             sortedGpaKeys.forEach(key => {
                 const semesterName = gpaMap[key];
                 const gpaValue = allResults[key];
-                const semDate = studentData.dates?.[key] || 'N/A'; // Use specific date if available
+                const semDate = studentData.dates?.[key] || 'N/A'; // Semester-specific date
                 
                 if (gpaValue !== undefined && semesterName) {
                     const { class: gradeClass, text: displayText, status: statusText } = getGradeClassAndText(gpaValue);
@@ -886,10 +876,10 @@
                   <form method="dialog"><button class="close-btn">&times;</button></form>
 
                   <div class="popup-header">
-                    <p class="font-bold">${instituteName}</p>
+                    <p>${instituteName}</p>
                     <h2>Roll: ${rollNumber}</h2>
-                    <p>${studentData.exam || 'N/A'} (${studentData.regulation || 'N/A'})</p>
-                    <p class="mt-2 text-xs dark:text-gray-400 text-gray-700">Result Published: ${publishedDate}</p>
+                    <p>${resultExamText}</p>
+                    <p class="mt-2 text-xs dark:text-gray-400 text-gray-700">Overall Result Published: ${overallPublishedDate}</p>
                   </div>
 
                   ${resultsHTML}
