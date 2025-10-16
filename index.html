@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://kit.fontawesome.com/46072dcaff.js" crossorigin="anonymous"></script>
     
     <style>
         /* Import Fonts */
@@ -178,7 +179,7 @@
         html[data-theme="light"] .card .separator { border-top: 1.5px solid rgba(0, 0, 0, 0.1); }
 
 
-        /* --- NEW CUSTOM RESULT POPUP STYLES (from your new code) --- */
+        /* --- NEW CUSTOM RESULT POPUP STYLES --- */
         /* Reset font for consistency, using existing font */
         .popup * {
             font-family: 'Ubuntu', sans-serif;
@@ -223,6 +224,7 @@
             cursor: pointer;
             transition: color 0.3s;
             color: #fff; /* Dark mode color */
+            z-index: 10;
         }
         html[data-theme="light"] .close-btn {
             color: #1e293b; /* Light mode color */
@@ -249,6 +251,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
+            z-index: 10;
         }
         html[data-theme="light"] .screenshot-btn {
             background: rgba(0, 0, 0, 0.05);
@@ -262,7 +265,6 @@
         html[data-theme="light"] .screenshot-btn:hover {
             background: rgba(0, 0, 0, 0.15);
         }
-
 
         .popup-header {
             text-align: center;
@@ -318,14 +320,14 @@
         .semester-header .date {
             flex: 1;
             text-align: right;
-            font-size: 0.9rem;
+            font-size: 0.8rem; /* Smaller date font */
             color: #ccc;
         }
         html[data-theme="light"] .semester-header .date {
             color: #475569;
         }
 
-        /* ===== GRADE GLOW & COLORS ===== */
+        /* ===== GRADE GLOW & COLORS (UPDATED BASED ON GRADING SYSTEM) ===== */
         .cgpa {
             text-align: center;
             font-size: 1.1rem;
@@ -358,28 +360,31 @@
             100% { left: 150%; }
         }
 
+        /* GPA 4.0 (A+) - Golden */
         .grade-aplus {
-            background: linear-gradient(135deg, #ffd700, #ffea8a);
-            color: #5a4200;
+            background: linear-gradient(135deg, #FFD700, #FFE677);
+            color: #614e00;
             box-shadow: 0 0 20px #ffd700a8;
         }
-
-        .grade-a {
-            background: linear-gradient(135deg, #00ff88, #7fffbd);
-            color: #003a1f;
-            box-shadow: 0 0 20px #00ff88a8;
+        
+        /* GPA 3.50-3.75 (A, A-) - Yellow */
+        .grade-a-high {
+            background: linear-gradient(135deg, #FACC15, #FDE68A); /* Tailwind amber-500 */
+            color: #78350F; /* Dark brown/orange */
+            box-shadow: 0 0 20px #FACC15A8;
         }
 
-        .grade-aminus {
-            background: linear-gradient(135deg, #ffe96a, #fff6b1);
-            color: #553e00;
-            box-shadow: 0 0 20px #ffe96aa8;
+        /* GPA 2.00-3.25 (B+ to D) - Green */
+        .grade-pass {
+            background: linear-gradient(135deg, #10B981, #6EE7B7); /* Tailwind emerald-500 */
+            color: #064E3B; /* Dark teal */
+            box-shadow: 0 0 20px #10B981A8;
         }
 
-        /* New: Color for 'Ref' status in the GPA section */
+        /* GPA < 2.00 or 'ref' - Red */
         .grade-ref {
-            background: linear-gradient(135deg, #ef4444, #fca5a5); /* Red-500 to Red-300 */
-            color: #450a0a; /* Red-900 */
+            background: linear-gradient(135deg, #EF4444, #FCA5A5); /* Red-500 to Red-300 */
+            color: #450A0A; /* Red-900 */
             box-shadow: 0 0 20px #ef4444a8;
         }
 
@@ -496,7 +501,7 @@
                                             <li class="element">
                                                 <label for="exam-eng" onclick="selectOption('exam-eng', 'Diploma in Engineering', 'selected-exam')">
                                                     <input type="radio" id="exam-eng" name="exam-filed" value="DIPLOMA IN ENGINEERING" checked />
-                                                    <svg class="lucide lucide-book-open" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg" stroke="#7e8590"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                                                    <i class="fa-solid fa-graduation-cap"></i>
                                                     Diploma in Engineering
                                                 </label>
                                             </li>
@@ -504,13 +509,7 @@
                                             <li class="element">
                                                 <label for="exam-textile" onclick="selectOption('exam-textile', 'Diploma in Textile', 'selected-exam')">
                                                     <input type="radio" id="exam-textile" name="exam-filed" value="DIPLOMA IN TEXTILE" />
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7e8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-factory">
-                                                         <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-6 4-6-4-6 4V4a2 2 0 0 1 2-2h4"/>
-                                                         <path d="M12 2v6"/>
-                                                         <path d="M12 10v6"/>
-                                                         <path d="M16 8v6"/>
-                                                         <path d="M16 12v6"/>
-                                                     </svg>
+                                                    <i class="fa-solid fa-shirt"></i>
                                                     Diploma in Textile
                                                 </label>
                                             </li>
@@ -535,7 +534,7 @@
                                             <li class="element">
                                                 <label for="reg-2022" onclick="selectOption('reg-2022', '2022', 'selected-regulation')">
                                                     <input type="radio" id="reg-2022" name="regulation-field" value="2022" checked />
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7e8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-clock"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h8"/><circle cx="17" cy="17" r="5"/><path d="M17 14v3h3"/></svg>
+                                                    <i class="fa-solid fa-calendar-check"></i>
                                                     2022
                                                 </label>
                                             </li>
@@ -543,7 +542,7 @@
                                             <li class="element">
                                                 <label for="reg-2016" onclick="selectOption('reg-2016', '2016', 'selected-regulation')">
                                                     <input type="radio" id="reg-2016" name="regulation-field" value="2016" />
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7e8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-off"><path d="M4.2 4.2A2 2 0 0 0 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 1.8-1.2"/><path d="M8 2v4"/><path d="M16 2v2"/><path d="M3 10h11"/><path d="m2 2 20 20"/></svg>
+                                                    <i class="fa-solid fa-calendar-day"></i>
                                                     2016
                                                 </label>
                                             </li>
@@ -620,13 +619,13 @@
                     
                     <div class="flex justify-center gap-5 text-xl border-y dark:border-gray-700 border-gray-400 my-5 py-5 dark:text-white text-gray-900">
                         <a href="https://www.facebook.com/mujahidulhasan2" target="_blank" title="Facebook">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path></svg>
+                            <i class="fa-brands fa-square-facebook"></i>
                         </a>
                         <a href="mailto:mujahidulhasan2@gmail.com" title="Email">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M928 160H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-80.8 108.9L531.7 514.4c-7.8 6.1-18.7 6.1-26.5 0L189.6 268.9A7.2 7.2 0 0 1 194 256h648.8a7.2 7.2 0 0 1 4.4 12.9z"></path></svg>
+                            <i class="fa-solid fa-envelope"></i>
                         </a>
                         <a href="https://github.com/mujahidulhasan" target="_blank" title="GitHub">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
+                            <i class="fa-brands fa-github"></i>
                         </a>
                     </div>
                     
@@ -646,14 +645,14 @@
                     </div>
                     
                     <ul class="menu [&_a]:btn [&_a]:gap-3 [&_a]:justify-start [&_a]:py-2 [&_a]:text-base sm:[&_a]:text-lg">
-                        <li><a href="/"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12.97 2.59a1.5 1.5 0 0 0-1.94 0l-7.5 6.363A1.5 1.5 0 0 0 3 10.097V19.5A1.5 1.5 0 0 0 4.5 21h4.75a.75.75 0 0 0 .75-.75V14h4v6.25c0 .414.336.75.75.75h4.75a1.5 1.5 0 0 0 1.5-1.5v-9.403a1.5 1.5 0 0 0-.53-1.144l-7.5-6.363Z"></path></svg> Home</a></li>
-                        <li><a href="/results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>Individual Result</a></li>
-                        <li><a href="/institute-results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21 10h-2V4h1V2H4v2h1v6H3a1 1 0 0 0-1 1v9h20v-9a1 1 0 0 0-1-1zm-7 8v-4h-4v4H7V4h10v14h-3z"></path><path d="M9 6h2v2H9zm4 0h2v2h-2zm-4 4h2v2H9zm4 0h2v2h-2z"></path></svg>Institute Result</a></li>
-                        <li><a href="/group-results"><svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.2" baseProfile="tiny" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.381 0 2.631-.56 3.536-1.465.904-.904 1.464-2.154 1.464-3.535s-.56-2.631-1.464-3.535c-.905-.905-2.155-1.465-3.536-1.465s-2.631.56-3.536 1.465c-.904.904-1.464 2.154-1.464 3.535s.56 2.631 1.464 3.535c.905.905 2.155 1.465 3.536 1.465zM20 15c.69 0 1.315-.279 1.768-.731.453-.452.732-1.077.732-1.769 0-.69-.279-1.315-.732-1.768-.453-.453-1.078-.732-1.768-.732-.691 0-1.316.279-1.769.732-.452.453-.731 1.078-.731 1.768 0 .691.279 1.316.731 1.769s1.078.731 1.769.731zM20 15.59c-1.331 0-2.332.406-2.917.968-1.115-.917-2.878-1.558-5.083-1.558-2.266 0-3.995.648-5.092 1.564-.596-.565-1.608-.974-2.908-.974-2.188 0-3.5 1.09-3.5 2.182 0 .545 1.312 1.092 3.5 1.092.604 0 1.146-.051 1.623-.133l-.04.27c0 1 2.406 2 6.417 2 3.762 0 6.417-1 6.417-2l-.02-.255c.463.073.995.118 1.603.118 2.051 0 3.5-.547 3.5-1.092 0-1.092-1.373-2.182-3.5-2.182zM4 15c.69 0 1.315-.279 1.768-.732.453-.453.732-1.078.732-1.768 0-.689-.279-1.314-.732-1.768-.453-.452-1.078-.732-1.768-.732-.691 0-1.316.28-1.769.732-.452.454-.731 1.079-.731 1.768 0 .69.279 1.315.731 1.768.453.453 1.078.732 1.769.732z"></path></svg>Group Result</a></li>
-                        <li><a href="/cgpa-calculator"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM440.2 765h-50.8c-2.2 0-4.5-1.1-5.9-2.9L348 718.6l-35.5 43.5a7.38 7.38 0 0 1-5.9 2.9h-50.8c-6.6 0-10.2-7.9-5.8-13.1l62.7-76.8-61.2-74.9c-4.3-5.2-.7-13.1 5.9-13.1h50.9c2.2 0 4.5 1.1 5.9 2.9l34 41.6 34-41.6c1.5-1.9 3.6-2.9 5.9-2.9h50.8c6.6 0 10.2 7.9 5.9 13.1L383.5 675l62.7 76.8c4.2 5.3.6 13.2-6 13.2zm7.8-382c0 2.2-1.4 4-3.2 4H376v68.7c0 1.9-1.8 3.3-4 3.3h-48c-2.2 0-4-1.4-4-3.2V387h-68.8c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4H320v-68.8c0-1.8 1.8-3.2 4-3.2h48c2.2 0 4 1.4 4 3.2V331h68.7c1.9 0 3.3 1.8 3.3 4v48zm328 369c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48zm0-104c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48zm0-265c0 2.2-1.4 4-3.2 4H579.2c-1.8 0-3.2-1.8-3.2-4v-48c0-2.2 1.4-4 3.2-4h193.5c1.9 0 3.3 1.8 3.3 4v48z"></path></svg>CGPA Calculator</a></li>
-                        <li><a href="/booklists"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"></path></svg>Booklists</a></li>
-                        <li><a href="/about"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"></path></svg>About</a></li>
-                        <li><a href="mailto:mujahidulhasan2@gmail.com"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56zm-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26z"></path></svg>Contact</a></li>
+                        <li><a href="/"><i class="fa-solid fa-house"></i> Home</a></li>
+                        <li><a href="/results"><i class="fa-solid fa-user"></i> Individual Result</a></li>
+                        <li><a href="/institute-results"><i class="fa-solid fa-building-columns"></i> Institute Result</a></li>
+                        <li><a href="/group-results"><i class="fa-solid fa-people-group"></i> Group Result</a></li>
+                        <li><a href="/cgpa-calculator"><i class="fa-solid fa-calculator"></i> CGPA Calculator</a></li>
+                        <li><a href="/booklists"><i class="fa-solid fa-book"></i> Booklists</a></li>
+                        <li><a href="/about"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                        <li><a href="mailto:mujahidulhasan2@gmail.com"><i class="fa-solid fa-envelope"></i> Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -671,29 +670,38 @@
              return null;
         }
 
-        // --- GRADING SCALE HELPER (Based on your new design's color variants) ---
+        // --- GRADING SCALE HELPER (UPDATED FOR COLOR REQUIREMENTS) ---
         function getGradeClassAndText(gpa) {
             const gpaValue = String(gpa).toLowerCase();
             const gpaNumber = parseFloat(gpa);
 
-            if (gpaValue === 'ref') {
-                return { class: 'grade-ref', text: 'Referred (Ref)', status: 'Referred' };
-            } else if (gpaNumber >= 3.60) {
+            if (gpaValue === 'ref' || gpaNumber < 2.00) {
+                return { class: 'grade-ref', text: gpaValue === 'ref' ? 'Referred (Ref)' : gpaNumber.toFixed(2) + ' (F)', status: 'Referred' };
+            } else if (gpaNumber >= 4.00) {
+                // Golden (A+)
                 return { class: 'grade-aplus', text: gpaNumber.toFixed(2) + ' (A+)', status: 'Passed' };
-            } else if (gpaNumber >= 3.20) {
-                return { class: 'grade-a', text: gpaNumber.toFixed(2) + ' (A)', status: 'Passed' };
-            } else if (gpaNumber >= 2.80) {
-                return { class: 'grade-aminus', text: gpaNumber.toFixed(2) + ' (A-)', status: 'Passed' };
-            } else if (gpaNumber >= 2.00) {
-                 return { class: 'grade-a', text: gpaNumber.toFixed(2) + ' (B/C)', status: 'Passed' }; // Use 'A' color for general pass
+            } else if (gpaNumber >= 3.50) {
+                // Yellow (A, A-)
+                const letter = gpaNumber >= 3.75 ? 'A' : 'A-';
+                return { class: 'grade-a-high', text: gpaNumber.toFixed(2) + ` (${letter})`, status: 'Passed' };
             } else {
-                 return { class: 'grade-ref', text: gpaNumber.toFixed(2) + ' (Failed)', status: 'Referred' };
+                // Green (B+ to D)
+                let letter;
+                if (gpaNumber >= 3.25) letter = 'B+';
+                else if (gpaNumber >= 3.00) letter = 'B';
+                else if (gpaNumber >= 2.75) letter = 'B-';
+                else if (gpaNumber >= 2.50) letter = 'C+';
+                else if (gpaNumber >= 2.25) letter = 'C';
+                else letter = 'D'; // 2.00 to 2.24
+                
+                return { class: 'grade-pass', text: gpaNumber.toFixed(2) + ` (${letter})`, status: 'Passed' };
             }
         }
         
-        // Function to handle the screenshot (Requires html2canvas)
+        // Function to handle the screenshot
         function takeScreenshot() {
-          const popup = document.getElementById("popup-main-content"); // Target the main popup div
+          const popup = document.getElementById("popup-main-content"); 
+          
           // Temporarily hide the buttons for a clean screenshot
           const ssBtn = document.querySelector('#popup-main-content .screenshot-btn');
           const closeBtn = document.querySelector('#popup-main-content .close-btn');
@@ -705,7 +713,7 @@
               backgroundColor: null 
             }).then(canvas => {
             const link = document.createElement("a");
-            link.download = "Result_Roll_" + document.getElementById('roll-number').value.trim() + ".png";
+            link.download = "BTEB_Result_Roll_" + document.getElementById('roll-number').value.trim() + ".png";
             link.href = canvas.toDataURL("image/png");
             link.click();
             
@@ -803,6 +811,7 @@
             let referredSubjectsHTML = '';
             const allResults = studentData.results || {};
             const referred = studentData.referred_subjects || [];
+            const publishedDate = studentData.published_date || 'N/A'; // Fetch overall published date
 
             // Map gpa keys to user-friendly names
             const gpaMap = { 
@@ -821,7 +830,7 @@
             sortedGpaKeys.forEach(key => {
                 const semesterName = gpaMap[key];
                 const gpaValue = allResults[key];
-                const publishedDate = studentData.dates?.[key] || 'N/A'; // Use specific date if available
+                const semDate = studentData.dates?.[key] || 'N/A'; // Use specific date if available
                 
                 if (gpaValue !== undefined && semesterName) {
                     const { class: gradeClass, text: displayText, status: statusText } = getGradeClassAndText(gpaValue);
@@ -831,7 +840,7 @@
                           <div class="semester-header">
                             <span>${semesterName}</span>
                             <div class="status-${statusText.toLowerCase()}">${statusText}</div>
-                            <div class="date">${publishedDate}</div>
+                            <div class="date">${semDate}</div>
                           </div>
                           <div class="cgpa ${gradeClass}">CGPA: ${displayText}</div>
                         </div>
@@ -855,13 +864,16 @@
             // Final Result Card Structure
             popupContainer.innerHTML = `
                 <div class="popup" id="popup-main-content">
-                  <button class="screenshot-btn" onclick="takeScreenshot()">📸</button>
+                  <button class="screenshot-btn" onclick="takeScreenshot()">
+                    <i class="fa-solid fa-camera"></i>
+                  </button>
                   <form method="dialog"><button class="close-btn">&times;</button></form>
 
                   <div class="popup-header">
+                    <p>${studentData.institute_name || 'Institute N/A'}</p>
                     <h2>Roll: ${rollNumber}</h2>
                     <p>${studentData.exam || 'N/A'} (${studentData.regulation || 'N/A'})</p>
-                    <p>${studentData.institute_name || 'Institute N/A'}</p>
+                    <p class="mt-2 text-xs dark:text-gray-400 text-gray-700">Result Published: ${publishedDate}</p>
                   </div>
 
                   ${resultsHTML}
